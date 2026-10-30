@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- stoneo icon · 搜索工具 · 方向 3：水豚探半个头，头上顶放大镜 -->
+  <defs>
+    <clipPath id="tile"><rect x="64" y="64" width="896" height="896" rx="208"/></clipPath>
+    <clipPath id="under"><rect x="0" y="690" width="1024" height="300"/></clipPath>
+  </defs>
+  <rect data-role="plate" x="64" y="64" width="896" height="896" rx="208" fill="#F7F2EA"/>
+  <rect data-role="plate-edge" x="70" y="70" width="884" height="884" rx="202" fill="none" stroke="#E3D8C8" stroke-width="12"/>
+  <g clip-path="url(#tile)" stroke="#2B2520" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="660" cy="500" r="64" fill="#FFFDF8" stroke-width="50"/>
+    <circle cx="850" cy="530" r="64" fill="#FFFDF8" stroke-width="50"/>
+    <rect x="110" y="510" width="900" height="700" rx="300" fill="#FFFDF8" stroke-width="58"/>
+    <path d="M110 1100 V 790 Q 110 670 230 670 H 320 Q 430 670 430 790 V 1100 Z" fill="#EE9A55" stroke-width="54"/>
+    <line x1="580" y1="690" x2="800" y2="690" stroke-width="60"/>
+    <g clip-path="url(#under)"><circle cx="630" cy="690" r="66" fill="#2B2520" stroke="none"/></g>
+    <line x1="420" y1="400" x2="500" y2="480" stroke-width="88"/>
+    <circle cx="330" cy="310" r="112" fill="#FFFDF8" stroke-width="66"/>
+  </g>
+</svg>

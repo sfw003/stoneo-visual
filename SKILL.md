@@ -1,12 +1,14 @@
 ---
 name: stoneo-visual
-description: "用一只沉稳、半眯眼斜着看人的水豚角色，以克制的漫画墨线 + 杏色网点风格出图；当用户要带水豚角色的专属配图、解释图、透明插画、头像或季节/节日限定图时使用。仅在用户明确点名 stoneo-visual 或要求带水豚角色出图时使用。"
+description: "用一只沉稳、半眯眼斜着看人的水豚角色，以克制的漫画墨线 + 杏色网点风格出图；当用户要带水豚角色的专属配图、解释图、透明插画、头像、季节/节日限定图，或要做个人 logo、应用图标（桌面 / 移动端 icon、favicon）时使用。仅在用户明确点名 stoneo-visual 或要求带水豚角色出图时使用。"
 disable-model-invocation: true
 ---
 
 # Stoneo Visual
 
 用同一只水豚、同一套画法出图。所有图都以参考图为底、用宿主的 **GenerateImage 做 edit**，文字一律用 HTML 后加。
+
+例外是**图标 / logo 模式**：成品是手写 SVG（粗线 + 纯色，没有网点），AI 只出概念草图。走这个模式时直接读 `references/icon-mode.md`，下面第 3 节的出图流程不适用。
 
 本文件里的相对路径都相对于本 skill 目录（下文记作 `<skill>`）。传给 GenerateImage 的参考图要换成绝对路径。
 
@@ -40,8 +42,9 @@ disable-model-invocation: true
    - 模式 A：解释图。
    - 模式 B：透明插画。
    - 头像模式：方形头像，含季节限定头像。
+   - 图标 / logo 模式：应用图标、个人 logo、favicon。全部按 `references/icon-mode.md` 做，不走下面 2–6 步。
 
-   拿不准时：图片本身要讲清事情选 A；要放进别的排版选 B；要当头像选头像模式。
+   拿不准时：图片本身要讲清事情选 A；要放进别的排版选 B；要当头像选头像模式；要给软件、网站当图标或 logo 选图标模式。
 2. **选参考图**：按 `references/reference-images.md` 选。第 1 张永远是 `assets/refs/capybara-master-34view.jpg`，总数 2–3 张。手里要拿东西时必须加 `pose-shrug-nub-hands.jpg`。
 3. **拼提示词**：按 `references/prompt-template.md` 拼，顺序是 A 角色段 → B 槽位 → C 风格锚点 → D 模式。A、C 原样复制，只填 B、选 D。季节和节日的槽位见 `references/seasonal.md`，完整示例见 `references/examples/`。
 4. **调用 GenerateImage**：
@@ -71,15 +74,19 @@ disable-model-invocation: true
 - `references/output-format.md`：固定输出规范（3 方案对比板）。
 - `references/seasonal.md`：季节和节日限定的做法，以及提示词例子。
 - `references/html-labels.md`：用 HTML 加文字。
-- `references/examples/`：已验证的完整提示词。
+- `references/icon-mode.md`：图标 / logo 模式：系列规则、AI 草图 + 手写 SVG 流程、各平台导出规格、图标对比板。
+- `references/examples/`：已验证的完整提示词；`examples/icons/` 是图标 SVG 写法示例。
 - `assets/refs/`：参考图，清单见 reference-images.md。
 - `assets/templates/compare-board.html`：方案对比板模板。
 - `assets/templates/label-overlay.html`：解释图加标签模板。
+- `assets/templates/icon-plate.svg`：图标起手 SVG（统一底板）。
+- `assets/templates/icon-board.html`：图标对比板（总览 + 桌面实测两张）。
 - `scripts/cutout.py`：绿幕抠图，改编自 oil-visual，MIT 许可，见 `scripts/LICENSE-oil-visual`。
 - `scripts/avatar_preview.py`：头像的圆裁、小尺寸预览和安全边距检查。
 - `scripts/render_board.py`：用无头 Chrome 把 HTML 渲染成 PNG，并自动裁掉底部空白。
+- `scripts/export_icon.py`：SVG 导出 16–1024 PNG、Windows `.ico`、macOS `.icns`，`--mobile` 再出 iOS / Android / HarmonyOS 用的铺满图和前景、背景两层。
 
-脚本依赖：Python 3 和 Pillow（`pip install pillow`），以及 google-chrome 或 chromium。
+脚本依赖：Python 3 和 Pillow（`pip install pillow`），以及 google-chrome 或 chromium。`export_icon.py` 另需 `pip install cairosvg`。
 
 ## 6. 已知局限
 
@@ -87,3 +94,4 @@ disable-model-invocation: true
 - 「专注」表情必须带 `expr-focus-calm.jpg`，只写文字无效。
 - 32px 时斜眼基本看不清。
 - 小橘子、耳机、背包带、衣服颜色容易跑偏，修正写法见 troubleshooting。
+- 图标 16px 时水豚特征基本只剩轮廓，功能符号更耐缩小；详见 icon-mode.md。

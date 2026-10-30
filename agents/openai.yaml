@@ -1,4 +1,4 @@
 interface:
   display_name: "Stoneo Visual"
-  short_description: "Capybara mascot explainers, transparent illustrations and avatars"
+  short_description: "Capybara mascot explainers, illustrations, avatars and app icons"
   default_prompt: "Use $stoneo-visual to create an image featuring the calm side-eye capybara mascot in its restrained manga-ink style."

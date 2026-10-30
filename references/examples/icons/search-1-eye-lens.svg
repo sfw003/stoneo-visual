@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- stoneo icon · 搜索工具 · 方向 1：水豚当放大镜（镜片 = 斜眼） -->
+  <defs>
+    <clipPath id="lens"><circle cx="450" cy="450" r="200"/></clipPath>
+    <clipPath id="under"><rect x="0" y="420" width="1024" height="600"/></clipPath>
+  </defs>
+  <rect data-role="plate" x="64" y="64" width="896" height="896" rx="208" fill="#F7F2EA"/>
+  <rect data-role="plate-edge" x="70" y="70" width="884" height="884" rx="202" fill="none" stroke="#E3D8C8" stroke-width="12"/>
+  <g stroke="#2B2520" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="322" cy="190" r="58" fill="#EE9A55" stroke-width="46"/>
+    <circle cx="578" cy="190" r="58" fill="#EE9A55" stroke-width="46"/>
+    <line x1="650" y1="650" x2="806" y2="806" stroke-width="132"/>
+    <circle cx="450" cy="450" r="246" fill="#FFFDF8" stroke-width="100"/>
+    <g clip-path="url(#lens)">
+      <line x1="200" y1="420" x2="700" y2="420" stroke-width="64"/>
+      <g clip-path="url(#under)"><circle cx="540" cy="420" r="90" fill="#2B2520" stroke="none"/></g>
+    </g>
+    <line x1="388" y1="318" x2="500" y2="306" stroke-width="40"/>
+  </g>
+</svg>

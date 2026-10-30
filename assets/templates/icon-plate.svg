@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- stoneo 图标起手模板：复制到工作目录再改，不要改这份原件。规则见 references/icon-mode.md -->
+  <defs>
+    <!-- 需要让元素被底板裁掉（比如探出半个头）时，给那组元素加 clip-path="url(#tile)" -->
+    <clipPath id="tile"><rect x="64" y="64" width="896" height="896" rx="208"/></clipPath>
+  </defs>
+  <!-- 底板：二选一。纸色 #F7F2EA（配下面那圈浅边）或墨色 #2B2520（删掉浅边）。data-role 给 export_icon.py 的 mobile 导出用，别删 -->
+  <rect data-role="plate" x="64" y="64" width="896" height="896" rx="208" fill="#F7F2EA"/>
+  <rect data-role="plate-edge" x="70" y="70" width="884" height="884" rx="202" fill="none" stroke="#E3D8C8" stroke-width="12"/>
+  <!-- 主体：墨色粗线（主轮廓 90–132，细节不低于 40），圆头圆角；杏橘 #EE9A55 只用一处 -->
+  <g stroke="#2B2520" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <circle cx="450" cy="450" r="246" stroke-width="100" fill="#FFFDF8"/>
+    <line x1="650" y1="650" x2="806" y2="806" stroke-width="132"/>
+  </g>
+  <circle cx="450" cy="450" r="70" fill="#EE9A55"/>
+</svg>

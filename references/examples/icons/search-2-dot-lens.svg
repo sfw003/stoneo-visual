@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- stoneo icon · 搜索工具 · 方向 2：放大镜 + 杏橘点 -->
+  <rect data-role="plate" x="64" y="64" width="896" height="896" rx="208" fill="#2B2520"/>
+  <g stroke="#F7F2EA" stroke-linecap="round" fill="none">
+    <line x1="636" y1="636" x2="790" y2="790" stroke-width="132"/>
+    <circle cx="448" cy="448" r="236" stroke-width="100"/>
+  </g>
+  <circle cx="478" cy="418" r="74" fill="#EE9A55"/>
+</svg>

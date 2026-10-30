@@ -1,0 +1,96 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+/* stoneo-visual · 图标模式对比板。宽 1080（手机上看也清楚）。只改下面 BOARD。 */
+body{margin:0;background:#F7F2EA;font-family:"Noto Sans CJK SC","Source Han Sans SC","PingFang SC",sans-serif;color:#2B2520;width:1080px}
+.w{padding:44px 44px 10px}h1{font-size:34px;margin:0 0 8px}.s{font-size:17px;color:#6f6458;line-height:1.6;margin-bottom:28px}
+.card{background:#FBF8F2;border:1.5px solid #e6dccd;border-radius:22px;padding:24px;margin-bottom:24px}
+.card.rec{border-color:#EE9A55;box-shadow:0 0 0 1.5px #EE9A55 inset}
+.t{font-size:25px;font-weight:700;margin-bottom:8px}.t em{font-style:normal;font-size:15px;color:#fff;background:#EE9A55;border-radius:999px;padding:3px 12px;margin-left:10px;vertical-align:middle}
+.d{font-size:17px;color:#544a40;line-height:1.7}.d b{color:#2B2520}
+.cap{font-size:13px;color:#8a7d70;margin-top:6px}
+.px{image-rendering:pixelated}
+/* overview */
+.ov{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ov .card{padding:18px;margin:0}.ov .big{width:100%;display:block}
+.ov .t{font-size:20px;margin-top:10px}.ov .t em{font-size:13px;padding:2px 9px;margin-left:6px}
+.ov .d{font-size:15px;line-height:1.6}
+.chips{display:flex;gap:8px;margin-top:12px}
+.chip{flex:1;border-radius:12px;padding:10px 0;display:flex;align-items:flex-end;justify-content:center;gap:12px}
+.chip.l{background:#fff;border:1px solid #e6dccd}.chip.k{background:#24201C}
+.chip img{display:block}
+.zoom{display:flex;gap:10px;margin-top:10px;align-items:flex-end}
+.zoom div{text-align:center;font-size:12px;color:#8a7d70}
+/* detail */
+.top{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:start}
+.top .big{width:260px;height:260px;display:block}
+.row2{display:flex;gap:12px;align-items:flex-end;margin-top:14px}
+.sizes{display:flex;gap:14px;align-items:flex-end;padding:12px 16px;border-radius:12px}
+.sizes.l{background:#fff;border:1px solid #e6dccd}.sizes.k{background:#24201C}
+.sizes div{text-align:center;font-size:11px;color:#8a7d70}.sizes.k div{color:#a99c8d}
+.desks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.desk{position:relative;height:190px;border-radius:14px;overflow:hidden}
+.desk.l{background:#DCD6CC}.desk.k{background:#2E3033}
+.desk .lab{position:absolute;right:12px;top:10px;font-size:12px;color:#6f6458;background:rgba(255,255,255,.7);padding:2px 8px;border-radius:999px}
+.desk.k .lab{color:#cfc6ba;background:rgba(0,0,0,.35)}
+.dicon{position:absolute;left:18px;top:16px;width:72px;text-align:center;font-size:12px;color:#2B2520}
+.desk.k .dicon{color:#eee}.dicon img{display:block;margin:0 auto 4px}
+.win{position:absolute;left:0;right:0;bottom:0;height:48px;display:flex;align-items:center;justify-content:center;gap:10px}
+.desk.l .win{background:#F3F3F3;border-top:1px solid #d9d9d9}.desk.k .win{background:#1F1F1F;border-top:1px solid #3a3a3a}
+.slot{width:40px;height:40px;border-radius:6px;display:flex;align-items:center;justify-content:center;position:relative}
+.slot.on{background:rgba(127,127,127,.18)}.slot.on:after{content:"";position:absolute;bottom:1px;width:16px;height:3px;border-radius:2px;background:#8a8a8a}
+.ph24{width:24px;height:24px;border-radius:6px}.desk.l .ph24{background:#A9A9A9}.desk.k .ph24{background:#6A6A6A}
+.dock{position:absolute;left:50%;transform:translateX(-50%);bottom:10px;padding:7px 10px;border-radius:20px;display:flex;gap:9px;align-items:flex-end}
+.desk.l .dock{background:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.8)}.desk.k .dock{background:rgba(70,70,74,.6);border:1px solid rgba(255,255,255,.12)}
+.di{position:relative;width:52px;height:52px}.di img{width:52px;height:52px;display:block}
+.ph52{width:52px;height:52px;border-radius:12px}.desk.l .ph52{background:#B9B9B9}.desk.k .ph52{background:#5E5E5E}
+.di.on:after{content:"";position:absolute;left:24px;bottom:-6px;width:4px;height:4px;border-radius:50%;background:#777}
+.desk.k .di.on:after{background:#ddd}
+.sketch{width:120px;height:120px;border-radius:12px;display:block;margin-top:14px}
+</style></head><body><div class="w" id="app"></div>
+<script>
+/* ===== 只改这里 ===== */
+const BOARD = {
+  view: "overview",              // "overview" = 三个方案并排总览；"detail" = 每个方案的桌面实测细节
+  title: "搜索工具图标 · 三个方向",
+  subtitle: "每个方案：成品、实际尺寸、讲解。推荐的那个带橙色框。",
+  appName: "文件搜索",           // 桌面图标下面的名字（演示用）
+  options: [
+    // icon：PNG 前缀，会去找 `${icon}-16.png`、`-24`、`-32`、`-48`、`-64`、`-1024`（export_icon.py 的 png/ 输出）
+    // sketch：可选，AI 概念草图路径
+    { icon: "export/1/png/app", name: "1 · 水豚当放大镜", elements: "…", pros: "…", cost: "…", rec: true },
+  ],
+};
+/* ===================== */
+const app=document.getElementById('app');
+const I=(o,s,extra='')=>`<img src="${o.icon}-${s}.png" width="${s}" height="${s}" ${extra}>`;
+const Z=(o,s,k)=>`<img class="px" src="${o.icon}-${s}.png" width="${s*k}" height="${s*k}">`;
+const desc=o=>`<b>元素：</b>${o.elements}。<br><b>优点：</b>${o.pros}。<br><b>代价：</b>${o.cost}。`;
+const badge=o=>o.rec?'<em>推荐</em>':'';
+let h=`<h1>${BOARD.title}</h1><div class="s">${BOARD.subtitle}</div>`;
+if(BOARD.view==="overview"){
+  h+='<div class="ov">';
+  for(const o of BOARD.options){
+    h+=`<div class="card${o.rec?' rec':''}"><img class="big" src="${o.icon}-1024.png"><div class="t">${o.name}${badge(o)}</div><div class="d">${desc(o)}</div>
+      <div class="chips"><div class="chip l">${I(o,64)}${I(o,32)}${I(o,16)}</div><div class="chip k">${I(o,64)}${I(o,32)}${I(o,16)}</div></div>
+      <div class="cap">上面是 64 / 32 / 16px 原大</div>
+      <div class="zoom"><div>${Z(o,32,3)}<br>32px 放大</div><div>${Z(o,16,6)}<br>16px 放大</div></div></div>`;
+  }
+  h+='</div>';
+} else {
+  for(const o of BOARD.options){
+    const ph24='<div class="slot"><div class="ph24"></div></div>', ph52='<div class="di"><div class="ph52"></div></div>';
+    const win=(k)=>`<div class="desk ${k}"><span class="lab">Windows · ${k==='l'?'浅色':'深色'}</span>
+        <div class="dicon">${I(o,48)}${BOARD.appName}</div>
+        <div class="win">${ph24}${ph24}<div class="slot on">${I(o,24)}</div>${ph24}${ph24}</div></div>`;
+    const mac=(k)=>`<div class="desk ${k}"><span class="lab">macOS Dock · ${k==='l'?'浅色':'深色'}</span>
+        <div class="dock">${ph52}${ph52}<div class="di on"><img src="${o.icon}-128.png"></div>${ph52}${ph52}</div></div>`;
+    h+=`<div class="card${o.rec?' rec':''}"><div class="top"><div><img class="big" src="${o.icon}-1024.png">${o.sketch?`<img class="sketch" src="${o.sketch}"><div class="cap">AI 概念草图（只定构图，成品是手写 SVG）</div>`:''}</div>
+      <div><div class="t">${o.name}${badge(o)}</div><div class="d">${desc(o)}</div>
+      <div class="row2"><div class="sizes l">${[16,24,32,48,64].map(s=>`<div>${I(o,s)}${s}</div>`).join('')}</div>
+      <div class="sizes k">${[16,24,32,48,64].map(s=>`<div>${I(o,s)}${s}</div>`).join('')}</div></div>
+      <div class="cap">实际像素大小，浅色 / 深色底</div></div></div>
+      <div class="desks">${win('l')}${mac('l')}${win('k')}${mac('k')}</div>
+      <div class="cap">灰色圆角块是别的应用的占位，用来看并排时够不够醒目。</div></div>`;
+  }
+}
+app.innerHTML=h;
+</script></body></html>
