@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body{margin:0;background:#F7F2EA;font-family:"Noto Sans CJK SC","Source Han Sans SC",sans-serif;color:#2B2520;width:1500px}
+.w{padding:44px 52px}h1{font-size:32px;margin:0 0 6px}.s{font-size:16px;color:#7a6e63;margin-bottom:24px}
+.row{display:grid;grid-template-columns:300px 300px 1fr;gap:24px;align-items:center;background:#FBF8F2;border:1.5px solid #e6dccd;border-radius:20px;padding:20px;margin-bottom:20px}
+.row.rec{border-color:#EE9A55;box-shadow:0 0 0 1px #EE9A55 inset}
+.sq{width:300px;height:300px;object-fit:contain;border-radius:12px;display:block;background:#F7F2EA}
+.cap{font-size:13px;color:#8a7d70;text-align:center;margin-top:6px}
+.t{font-size:24px;font-weight:700;margin-bottom:6px}.t em{font-style:normal;font-size:14px;color:#fff;background:#EE9A55;border-radius:999px;padding:2px 10px;margin-left:8px;vertical-align:middle}
+.d{font-size:15px;color:#5a4f45;line-height:1.6;margin-bottom:14px}.d b{color:#2B2520}
+.circle{width:300px;height:300px;border-radius:50%;object-fit:cover;display:block}
+.sm{display:flex;gap:26px;align-items:flex-end}.sm div{text-align:center;font-size:12px;color:#8a7d70}
+.sm img{display:block;margin:0 auto 4px}.r{border-radius:50%}
+.ctxs{display:flex;gap:12px;margin-top:14px}
+.ctx{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px}
+.ctx.l{background:#fff;border:1px solid #e6dccd}.ctx.dk{background:#24201C;color:#F3ECE1}
+.ctx b{font-size:14px}.ctx span{font-size:12px;opacity:.7}
+/* 配图用途演示：文章 + 卡片 */
+.article{width:300px;height:300px;background:#fff;border:1px solid #e6dccd;border-radius:12px;padding:16px;box-sizing:border-box;overflow:hidden}
+.article .h{font-size:17px;font-weight:700;margin-bottom:8px}.article .ln{height:7px;background:#ece5da;border-radius:4px;margin:6px 0}
+.article img{width:100%;height:150px;object-fit:contain;background:#F7F2EA;border-radius:8px;margin:8px 0}
+.card{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid #e6dccd;border-radius:14px;padding:10px;width:340px}
+.card img{width:96px;height:96px;object-fit:contain;background:#F7F2EA;border-radius:10px}.card .h{font-size:15px;font-weight:700}.card .ln{height:6px;background:#ece5da;border-radius:3px;margin-top:8px}
+.card.dk{background:#24201C;border-color:#24201C;color:#F3ECE1}.card.dk .ln{background:#3a332c}
+</style></head><body><div class="w" id="app"></div>
+<script>
+/* ===== 只改这里 ===== */
+const BOARD = {
+  title: "冬季限定头像 · 三个方案",
+  subtitle: "每行：原图 → 用途演示 → 一句讲解。推荐的那一行带橙色框和「推荐」。",
+  usage: "avatar",              // "avatar" = 头像（圆裁、64/32px、浅/深界面）；"illustration" = 配图（文章、卡片）
+  label: "昵称",                 // 头像演示里的名字占位，不要写真名
+  options: [
+    // img：相对本 html 的路径或绝对 file:// 路径
+    { img: "../out/avatar-a.png", name: "A · 毛线帽 + 围巾", elements: "暖灰毛线帽 + 杏色围巾", pros: "轮廓最有冬天感，小图辨识度高", cost: "帽子盖住头顶杏色块，少一点幽默", rec: false },
+    { img: "../out/avatar-b.png", name: "B · 围巾 + 头顶落雪", elements: "杏色围巾 + 几片淡雪花 + 腮红", pros: "对雪淡定斜眼，冷幽默最足，最像主形象", cost: "32px 时雪花和斜眼都看不清", rec: true },
+    { img: "../out/avatar-c.png", name: "C · 捧热饮", elements: "圆头手捧杯 + 热气", pros: "最温暖", cost: "冬季感只靠热气，杯子小图会糊", rec: false },
+  ],
+};
+/* ===================== */
+const app=document.getElementById('app');
+let h=`<h1>${BOARD.title}</h1><div class="s">${BOARD.subtitle}</div>`;
+for(const o of BOARD.options){
+  const desc=`<b>元素：</b>${o.elements}。<b>优点：</b>${o.pros}。<b>代价：</b>${o.cost}。`;
+  let demo, side;
+  if(BOARD.usage==="avatar"){
+    demo=`<div><img class="circle" src="${o.img}"><div class="cap">圆形裁切（耳朵、帽子要在圈内）</div></div>`;
+    side=`<div class="sm"><div><img class="r" src="${o.img}" width="64" height="64">64px</div><div><img class="r" src="${o.img}" width="32" height="32">32px</div><div><img src="${o.img}" width="64" height="64" style="border-radius:10px">64px 方形</div></div>
+      <div class="ctxs"><div class="ctx l"><img class="r" src="${o.img}" width="32" height="32"><div><b>${BOARD.label}</b><br><span>浅色界面</span></div></div><div class="ctx dk"><img class="r" src="${o.img}" width="32" height="32"><div><b>${BOARD.label}</b><br><span>深色界面</span></div></div></div>`;
+  } else {
+    demo=`<div><div class="article"><div class="h">文章标题示例</div><div class="ln" style="width:92%"></div><div class="ln" style="width:70%"></div><img src="${o.img}"><div class="ln" style="width:88%"></div><div class="ln" style="width:60%"></div></div><div class="cap">放进文章里</div></div>`;
+    side=`<div class="ctxs"><div class="card"><img src="${o.img}"><div style="flex:1"><div class="h">卡片标题</div><div class="ln" style="width:90%"></div><div class="ln" style="width:65%"></div></div></div></div>
+      <div class="ctxs"><div class="card dk"><img src="${o.img}"><div style="flex:1"><div class="h">深色卡片</div><div class="ln" style="width:90%"></div><div class="ln" style="width:65%"></div></div></div></div>`;
+  }
+  h+=`<div class="row${o.rec?' rec':''}"><div><img class="sq" src="${o.img}"><div class="cap">原图</div></div>${demo}
+    <div><div class="t">${o.name}${o.rec?'<em>推荐</em>':''}</div><div class="d">${desc}</div>${side}</div></div>`;
+}
+app.innerHTML=h;
+</script></body></html>

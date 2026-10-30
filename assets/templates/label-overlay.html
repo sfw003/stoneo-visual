@@ -1,0 +1,15 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+/* 改这里：页面尺寸 = 底图显示尺寸（4:3 → 1600x1200） */
+html,body{margin:0;width:1600px;height:1200px;background:#F7F2EA}
+.stage{position:relative;width:1600px;height:1200px}
+.stage img{width:100%;height:100%;display:block}
+.title{position:absolute;left:6%;top:5%;font:700 56px "Noto Sans CJK SC","Source Han Sans SC",sans-serif;color:#2B2520;letter-spacing:1px}
+.tag{position:absolute;font:600 34px "Noto Sans CJK SC","Source Han Sans SC",sans-serif;color:#2B2520;background:#FBF8F2;border:2px solid #2B2520;border-radius:999px;padding:6px 20px;white-space:nowrap}
+.tag::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;background:#EE9A55;margin-right:10px;vertical-align:middle}
+</style></head><body><div class="stage">
+<img src="BASE_IMAGE.png" alt="">
+<div class="title">一句话标题</div>
+<!-- 用百分比把标签放到对应物体旁边 -->
+<div class="tag" style="left:12%;top:70%">标签一</div>
+<div class="tag" style="left:60%;top:82%">标签二</div>
+</div></body></html>
