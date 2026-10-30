@@ -18,7 +18,7 @@ description: "用一只沉稳、半眯眼斜着看人的水豚角色，以克制
 - **主形象不穿戴任何东西**。服装、配件是可选扩展：
   - 服装：日常 T 恤、写代码卫衣（暖灰 + 杏色抽绳和口袋）、浅卡其外套（#E6D3B3，两个贴袋，一条背包带）。
   - 配件：耳机、头顶小橘子、冬季围巾（以及季节限定配件，见 `references/seasonal.md`）。
-- 总览：`assets/refs/character-sheet.jpg`（转面、表情、动作、外套）。只给人或 agent 看，不要传给 GenerateImage。
+- 总览：`assets/refs/character-sheet.jpg`（转面、表情、动作、服装与配件、模板实测）。只给人或 agent 看，不要传给 GenerateImage。
 
 ## 2. 风格规则与配色
 

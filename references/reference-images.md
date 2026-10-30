@@ -22,7 +22,7 @@
 | `acc-headphones.jpg` | 戴耳机 | 听歌 / 专注写代码 / 游戏（注意：远侧耳罩被挡住，提示词要写 BOTH ear cups visible） |
 | `acc-mandarin.jpg` | 头顶小橘子 | 幽默、吃东西场景 |
 | `avatar-winter-snow-scarf.jpg` | 冬季头像：围巾 + 头顶落雪 | 头像模式的构图范本；冬季 / 节日限定图 |
-| `character-sheet.jpg` | 整张角色设定板（转面、表情、动作、外套） | **给人看 / 给 agent 读的总览**，不要放进 reference_image_paths（拼图会被模型当成要画的内容） |
+| `character-sheet.jpg` | 整张角色设定板（转面、表情、动作、服装与配件、模板实测） | **给人看 / 给 agent 读的总览**，不要放进 reference_image_paths（拼图会被模型当成要画的内容） |
 
 ## 怎么选（最多 2–3 张）
 
