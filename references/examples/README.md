@@ -15,4 +15,5 @@
 
 - `search-1-eye-lens.svg`：水豚当放大镜，镜片是斜眼。
 - `search-2-dot-lens.svg`：墨色底板，放大镜 + 杏橘点。
-- `search-3-peek.svg`：水豚从下沿探半个头，头顶放大镜。
+- `search-3-peek.svg`：水豚从下沿探半个头，头顶放大镜（用户选定后打磨过的大图，48px 以上用）。
+- `search-3-peek-small-s1/s2/s3.svg`：同一图标的三种小尺寸帧写法（32 格网、像素对齐）：S1 大头 + 角上放大镜，S2 镜框当耳朵，S3 放大镜套住斜眼。

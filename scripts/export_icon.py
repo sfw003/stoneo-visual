@@ -2,7 +2,14 @@
 """Export a stoneo icon SVG to every desktop (and optionally mobile) size.
 
 Usage:
-    python3 export_icon.py icon.svg outdir/ [--name app] [--mobile] [--fg-scale 0.78]
+    python3 export_icon.py icon.svg outdir/ [--name app] [--small small.svg [--small-max 32]]
+                           [--mobile] [--fg-scale 0.78]
+
+Small-size frames (--small): every size <= --small-max (default 32, i.e. 16/24/32)
+is rendered from the simplified small SVG instead of the main one. This applies to
+the png/ set, every .ico frame and the matching .icns slots (16@2x is a 32px image,
+so it uses the small art; 32@2x = 64px uses the main art). Mobile assets always
+use the main SVG.
 
 Desktop (always):
     outdir/png/<name>-{16,24,32,48,64,128,256,512,1024}.png   transparent RGBA
@@ -79,6 +86,8 @@ def main() -> None:
     ap.add_argument("svg", type=Path)
     ap.add_argument("outdir", type=Path)
     ap.add_argument("--name", default="app")
+    ap.add_argument("--small", type=Path, help="simplified SVG used for sizes <= --small-max")
+    ap.add_argument("--small-max", type=int, default=32, help="largest size rendered from --small (default 32)")
     ap.add_argument("--mobile", action="store_true", help="also export full-bleed and layered mobile assets")
     ap.add_argument("--fg-scale", type=float, default=0.78,
                     help="foreground scale for Android/HarmonyOS layers (keeps art inside the ~66%% safe circle)")
@@ -87,7 +96,9 @@ def main() -> None:
     out = a.outdir
     (out / "png").mkdir(parents=True, exist_ok=True)
 
-    imgs = {s: render(svg, s) for s in PNG_SIZES}
+    small = a.small.read_bytes() if a.small else None
+    src = lambda s: small if small is not None and s <= a.small_max else svg
+    imgs = {s: render(src(s), s) for s in PNG_SIZES}
     for s, im in imgs.items():
         im.save(out / "png" / f"{a.name}-{s}.png")
 
@@ -98,6 +109,8 @@ def main() -> None:
     imgs[1024].save(icns, format="ICNS", append_images=[imgs[s] for s in ICNS_SIZES if s != 1024])
 
     print(f"png  {out / 'png'}  {', '.join(map(str, PNG_SIZES))}")
+    if small is not None:
+        print(f"small frames from {a.small.name}: {[s for s in PNG_SIZES if s <= a.small_max]}")
     print(f"ico  {ico}  frames={sorted(Image.open(ico).info.get('sizes', []))}")
     print(f"icns {icns}  sizes={sorted(Image.open(icns).info.get('sizes', []))}")
 

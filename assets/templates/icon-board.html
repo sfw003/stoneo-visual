@@ -44,12 +44,28 @@ body{margin:0;background:#F7F2EA;font-family:"Noto Sans CJK SC","Source Han Sans
 .ph52{width:52px;height:52px;border-radius:12px}.desk.l .ph52{background:#B9B9B9}.desk.k .ph52{background:#5E5E5E}
 .di.on:after{content:"";position:absolute;left:24px;bottom:-6px;width:4px;height:4px;border-radius:50%;background:#777}
 .desk.k .di.on:after{background:#ddd}
+/* small：大图 + 小尺寸专用帧 */
+.lg{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:start}
+.lg .big{width:240px;height:240px;display:block}
+.dockrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.dockrow .desk{height:110px}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ba .box{display:flex;gap:14px;align-items:flex-end;padding:14px;border-radius:14px;background:#fff;border:1px solid #e6dccd}
+.ba .box div{text-align:center;font-size:12px;color:#8a7d70}
+.ba h3{font-size:16px;margin:0 0 8px}
+.sm3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.sm3 .card{padding:16px;margin:0}.sm3 .t{font-size:19px}.sm3 .t em{font-size:13px;padding:2px 9px;margin-left:6px}
+.sm3 .d{font-size:14.5px;line-height:1.6}
+.sm3 .sizes{padding:10px 8px;gap:8px;justify-content:center;margin-top:8px}
+.sm3 .zoom{justify-content:center}
+.sm3 .desk{height:96px;margin-top:8px}.sm3 .win{gap:4px}.sm3 .slot{width:34px;height:34px}
+.sm3 .dicon{top:10px;left:12px;font-size:11px}
 .sketch{width:120px;height:120px;border-radius:12px;display:block;margin-top:14px}
 </style></head><body><div class="w" id="app"></div>
 <script>
 /* ===== 只改这里 ===== */
 const BOARD = {
-  view: "overview",              // "overview" = 三个方案并排总览；"detail" = 每个方案的桌面实测细节
+  view: "overview",              // "overview" = 三个方案并排总览；"detail" = 每个方案的桌面实测细节；"small" = 定稿大图 + 小尺寸专用帧对比
   title: "搜索工具图标 · 三个方向",
   subtitle: "每个方案：成品、实际尺寸、讲解。推荐的那个带橙色框。",
   appName: "文件搜索",           // 桌面图标下面的名字（演示用）
@@ -66,7 +82,32 @@ const Z=(o,s,k)=>`<img class="px" src="${o.icon}-${s}.png" width="${s*k}" height
 const desc=o=>`<b>元素：</b>${o.elements}。<br><b>优点：</b>${o.pros}。<br><b>代价：</b>${o.cost}。`;
 const badge=o=>o.rec?'<em>推荐</em>':'';
 let h=`<h1>${BOARD.title}</h1><div class="s">${BOARD.subtitle}</div>`;
-if(BOARD.view==="overview"){
+if(BOARD.view==="small"){
+  // BOARD.large：{icon,name,elements,pros,cost}；options[].icon 是带小尺寸帧的导出（export_icon.py --small）；
+  // BOARD.before：{old,new,oldLabel,newLabel} 旧版 vs 新版 16/32px
+  const L=BOARD.large, B=BOARD.before;
+  const ph52='<div class="di"><div class="ph52"></div></div>';
+  const dock=(k)=>`<div class="desk ${k}"><span class="lab">macOS Dock · ${k==='l'?'浅色':'深色'}</span><div class="dock">${ph52}${ph52}<div class="di on"><img src="${L.icon}-128.png"></div>${ph52}${ph52}</div></div>`;
+  h+=`<div class="card"><div class="lg"><img class="big" src="${L.icon}-1024.png"><div><div class="t">${L.name}</div><div class="d">${desc(L)}</div>
+    <div class="row2"><div class="sizes l">${[48,64,128].map(s=>`<div>${I(L,s)}${s}</div>`).join('')}</div><div class="sizes k">${[48,64,128].map(s=>`<div>${I(L,s)}${s}</div>`).join('')}</div></div>
+    <div class="cap">大图只负责 48px 以上：桌面、Dock、开始菜单大图标</div></div></div>
+    <div class="dockrow">${dock('l')}${dock('k')}</div></div>`;
+  if(B){
+    const col=(pre,lab)=>`<div><h3>${lab}</h3><div class="box"><div>${Z({icon:pre},16,5)}<br>16px 放大</div><div>${Z({icon:pre},32,2.5)}<br>32px 放大</div><div>${I({icon:pre},16)}<br>16</div><div>${I({icon:pre},32)}<br>32</div></div></div>`;
+    h+=`<div class="card"><div class="t">旧版 vs 新版</div><div class="ba">${col(B.old,B.oldLabel)}${col(B.new,B.newLabel)}</div></div>`;
+  }
+  h+='<div class="t" style="margin:6px 0 12px">小尺寸专用帧（32px 及以下）· 三个写法</div><div class="sm3">';
+  for(const o of BOARD.options){
+    const ph24='<div class="slot"><div class="ph24"></div></div>';
+    const win=k=>`<div class="desk ${k}"><span class="lab">Windows · ${k==='l'?'浅':'深'}</span><div class="dicon">${I(o,32)}</div><div class="win">${ph24}${ph24}<div class="slot on">${I(o,24)}</div>${ph24}</div></div>`;
+    h+=`<div class="card${o.rec?' rec':''}"><div class="zoom"><div>${Z(o,32,3)}<br>32px 放大</div></div><div class="zoom"><div>${Z(o,24,3)}<br>24px</div><div>${Z(o,16,4)}<br>16px</div></div>
+      <div class="t" style="margin-top:12px">${o.name}${badge(o)}</div><div class="d">${desc(o)}</div>
+      <div class="sizes l">${[16,24,32,48,64].map(s=>`<div>${I(o,s)}${s}</div>`).join('')}</div>
+      <div class="sizes k">${[16,24,32,48,64].map(s=>`<div>${I(o,s)}${s}</div>`).join('')}</div>
+      <div class="cap">原大。16/24/32 是小图，48/64 换回大图</div>${win('l')}${win('k')}</div>`;
+  }
+  h+='</div>';
+} else if(BOARD.view==="overview"){
   h+='<div class="ov">';
   for(const o of BOARD.options){
     h+=`<div class="card${o.rec?' rec':''}"><img class="big" src="${o.icon}-1024.png"><div class="t">${o.name}${badge(o)}</div><div class="d">${desc(o)}</div>

@@ -80,11 +80,11 @@ disable-model-invocation: true
 - `assets/templates/compare-board.html`：方案对比板模板。
 - `assets/templates/label-overlay.html`：解释图加标签模板。
 - `assets/templates/icon-plate.svg`：图标起手 SVG（统一底板）。
-- `assets/templates/icon-board.html`：图标对比板（总览 + 桌面实测两张）。
+- `assets/templates/icon-board.html`：图标对比板（总览、桌面实测、大图 + 小尺寸帧三种视图）。
 - `scripts/cutout.py`：绿幕抠图，改编自 oil-visual，MIT 许可，见 `scripts/LICENSE-oil-visual`。
 - `scripts/avatar_preview.py`：头像的圆裁、小尺寸预览和安全边距检查。
 - `scripts/render_board.py`：用无头 Chrome 把 HTML 渲染成 PNG，并自动裁掉底部空白。
-- `scripts/export_icon.py`：SVG 导出 16–1024 PNG、Windows `.ico`、macOS `.icns`，`--mobile` 再出 iOS / Android / HarmonyOS 用的铺满图和前景、背景两层。
+- `scripts/export_icon.py`：SVG 导出 16–1024 PNG、Windows `.ico`、macOS `.icns`；`--small` 让 32px 及以下改用单独画的小图；`--mobile` 再出 iOS / Android / HarmonyOS 用的铺满图和前景、背景两层。
 
 脚本依赖：Python 3 和 Pillow（`pip install pillow`），以及 google-chrome 或 chromium。`export_icon.py` 另需 `pip install cairosvg`。
 

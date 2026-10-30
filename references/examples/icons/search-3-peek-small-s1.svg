@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- 小尺寸帧 S1（≤32px）：大头 + 斜眼 + 杏色吻，放大镜缩成左上角一个粗圈。32 格网，奇数坐标上的 2 宽线在 16/32px 都落在整像素 -->
+  <defs><clipPath id="tile"><rect x="2" y="2" width="28" height="28" rx="6.5"/></clipPath></defs>
+  <rect data-role="plate" x="2" y="2" width="28" height="28" rx="6.5" fill="#F7F2EA"/>
+  <rect data-role="plate-edge" x="2.5" y="2.5" width="27" height="27" rx="6" fill="none" stroke="#DDD1C0" stroke-width="1"/>
+  <g clip-path="url(#tile)" stroke="#2B2520" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="5" y="15" width="25" height="20" rx="7" fill="#FFFDF8" stroke-width="2"/>
+    <rect x="6" y="20" width="8" height="10" rx="3" fill="#EE9A55" stroke="none"/>
+    <rect x="18" y="22" width="4" height="4" rx="1.5" fill="#2B2520" stroke="none"/>
+    <line x1="17" y1="21" x2="25" y2="21" stroke-width="2"/>
+    <line x1="11.5" y1="11.5" x2="12.5" y2="12.5" stroke-width="3"/>
+    <circle cx="8.5" cy="8.5" r="3.5" fill="#FFFDF8" stroke-width="2"/>
+  </g>
+</svg>
