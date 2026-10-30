@@ -23,8 +23,8 @@ body{margin:0;background:#F7F2EA;font-family:"Noto Sans CJK SC","Source Han Sans
 .card.dk{background:#24201C;border-color:#24201C;color:#F3ECE1}.card.dk .ln{background:#3a332c}
 </style></head><body><div class="w" id="app"></div>
 <script>
-/* ===== 只改这里 ===== */
-const BOARD = {
+/* BOARD 由 scripts/render_board.py 从 board.json 写入；下面只是示例数据，不要手改模板 */
+const BOARD = /*@BOARD*/{
   title: "冬季限定头像 · 三个方案",
   subtitle: "每行：原图 → 用途演示 → 一句讲解。推荐的那一行带橙色框和「推荐」。",
   usage: "avatar",              // "avatar" = 头像（圆裁、64/32px、浅/深界面）；"illustration" = 配图（文章、卡片）
@@ -35,7 +35,7 @@ const BOARD = {
     { img: "../out/avatar-b.png", name: "B · 围巾 + 头顶落雪", elements: "杏色围巾 + 几片淡雪花 + 腮红", pros: "对雪淡定斜眼，冷幽默最足，最像主形象", cost: "32px 时雪花和斜眼都看不清", rec: true },
     { img: "../out/avatar-c.png", name: "C · 捧热饮", elements: "圆头手捧杯 + 热气", pros: "最温暖", cost: "冬季感只靠热气，杯子小图会糊", rec: false },
   ],
-};
+}/*@END*/;
 /* ===================== */
 const app=document.getElementById('app');
 let h=`<h1>${BOARD.title}</h1><div class="s">${BOARD.subtitle}</div>`;

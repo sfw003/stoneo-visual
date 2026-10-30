@@ -64,7 +64,7 @@ def strip_plate(svg: bytes) -> tuple[bytes, str]:
             elif role == "plate-edge":
                 parent.remove(child)
     if not colour:
-        sys.exit('--mobile needs an element with data-role="plate" and a fill colour')
+        raise ValueError('--mobile needs an element with data-role="plate" and a fill colour')
     return ET.tostring(root), colour
 
 
@@ -81,49 +81,63 @@ def scaled(svg: bytes, scale: float) -> bytes:
     return ET.tostring(root)
 
 
+def export(svg_path: Path, out: Path, name: str = "app", small_path: Path | None = None,
+           small_max: int = 32, mobile: bool = False, fg_scale: float = 0.78, log=print) -> dict:
+    """Export everything; returns {relative path: size} of written files."""
+    if not re.fullmatch(r"[a-z0-9][a-z0-9-]*", name):
+        raise ValueError(f"--name must be lowercase letters, digits and '-', got {name!r}")
+    if small_max not in PNG_SIZES or small_max > 256:
+        raise ValueError(f"--small-max must be one of {[s for s in PNG_SIZES if s <= 256]}")
+    if not 0.5 <= fg_scale <= 1.0:
+        raise ValueError("--fg-scale must be between 0.5 and 1.0")
+    svg = svg_path.read_bytes()
+    small = small_path.read_bytes() if small_path else None
+    (out / "png").mkdir(parents=True, exist_ok=True)
+    src = lambda s: small if small is not None and s <= small_max else svg
+    imgs = {s: render(src(s), s) for s in PNG_SIZES}
+    for s, im in imgs.items():
+        im.save(out / "png" / f"{name}-{s}.png")
+    ico = out / f"{name}.ico"
+    imgs[256].save(ico, format="ICO", sizes=[(s, s) for s in ICO_SIZES],
+                   append_images=[imgs[s] for s in ICO_SIZES if s != 256])
+    icns = out / f"{name}.icns"
+    imgs[1024].save(icns, format="ICNS", append_images=[imgs[s] for s in ICNS_SIZES if s != 1024])
+    log(f"png  {out / 'png'}  {', '.join(map(str, PNG_SIZES))}")
+    if small is not None:
+        log(f"small frames from {small_path.name}: {[s for s in PNG_SIZES if s <= small_max]}")
+    log(f"ico  {ico}  frames={sorted(Image.open(ico).info.get('sizes', []))}")
+    log(f"icns {icns}  sizes={sorted(Image.open(icns).info.get('sizes', []))}")
+    if mobile:
+        m = out / "mobile"; m.mkdir(exist_ok=True)
+        bare, colour = strip_plate(svg)
+        bg = Image.new("RGBA", (1024, 1024), colour)
+        full = Image.alpha_composite(bg, render(bare, 1024)).convert("RGB")
+        for s in (1024, 512, 216):
+            (full if s == 1024 else full.resize((s, s), Image.LANCZOS)).save(m / f"{name}-fullbleed-{s}.png")
+        render(scaled(bare, fg_scale), 1024).save(m / "foreground-1024.png")
+        bg.convert("RGB").save(m / "background-1024.png")
+        log(f"mobile {m}  plate={colour}  fg-scale={fg_scale}")
+    return {str(p.relative_to(out)): p.stat().st_size for p in sorted(out.rglob("*")) if p.is_file()}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("svg", type=Path)
     ap.add_argument("outdir", type=Path)
-    ap.add_argument("--name", default="app")
+    ap.add_argument("--name", default="app", help="file prefix, lowercase-dashed (default app)")
     ap.add_argument("--small", type=Path, help="simplified SVG used for sizes <= --small-max")
     ap.add_argument("--small-max", type=int, default=32, help="largest size rendered from --small (default 32)")
     ap.add_argument("--mobile", action="store_true", help="also export full-bleed and layered mobile assets")
     ap.add_argument("--fg-scale", type=float, default=0.78,
                     help="foreground scale for Android/HarmonyOS layers (keeps art inside the ~66%% safe circle)")
     a = ap.parse_args()
-    svg = a.svg.read_bytes()
-    out = a.outdir
-    (out / "png").mkdir(parents=True, exist_ok=True)
-
-    small = a.small.read_bytes() if a.small else None
-    src = lambda s: small if small is not None and s <= a.small_max else svg
-    imgs = {s: render(src(s), s) for s in PNG_SIZES}
-    for s, im in imgs.items():
-        im.save(out / "png" / f"{a.name}-{s}.png")
-
-    ico = out / f"{a.name}.ico"
-    imgs[256].save(ico, format="ICO", sizes=[(s, s) for s in ICO_SIZES],
-                   append_images=[imgs[s] for s in ICO_SIZES if s != 256])
-    icns = out / f"{a.name}.icns"
-    imgs[1024].save(icns, format="ICNS", append_images=[imgs[s] for s in ICNS_SIZES if s != 1024])
-
-    print(f"png  {out / 'png'}  {', '.join(map(str, PNG_SIZES))}")
-    if small is not None:
-        print(f"small frames from {a.small.name}: {[s for s in PNG_SIZES if s <= a.small_max]}")
-    print(f"ico  {ico}  frames={sorted(Image.open(ico).info.get('sizes', []))}")
-    print(f"icns {icns}  sizes={sorted(Image.open(icns).info.get('sizes', []))}")
-
-    if a.mobile:
-        m = out / "mobile"; m.mkdir(exist_ok=True)
-        bare, colour = strip_plate(svg)
-        bg = Image.new("RGBA", (1024, 1024), colour)
-        full = Image.alpha_composite(bg, render(bare, 1024)).convert("RGB")
-        for s in (1024, 512, 216):
-            (full if s == 1024 else full.resize((s, s), Image.LANCZOS)).save(m / f"{a.name}-fullbleed-{s}.png")
-        render(scaled(bare, a.fg_scale), 1024).save(m / "foreground-1024.png")
-        bg.convert("RGB").save(m / "background-1024.png")
-        print(f"mobile {m}  plate={colour}  fg-scale={a.fg_scale}")
+    for p in (a.svg, a.small):
+        if p is not None and not p.is_file():
+            sys.exit(f"export_icon: no such file {p}")
+    try:
+        export(a.svg, a.outdir, a.name, a.small, a.small_max, a.mobile, a.fg_scale)
+    except (ValueError, ET.ParseError) as e:
+        sys.exit(f"export_icon: {e}")
 
 
 if __name__ == "__main__":

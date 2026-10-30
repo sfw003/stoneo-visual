@@ -1,15 +1,23 @@
 <!doctype html><html><head><meta charset="utf-8"><style>
-/* 改这里：页面尺寸 = 底图显示尺寸（4:3 → 1600x1200） */
-html,body{margin:0;width:1600px;height:1200px;background:#F7F2EA}
-.stage{position:relative;width:1600px;height:1200px}
+/* 解释图加字模板。字体、字号、颜色全部固定在这里；内容由 scripts/render_labels.py 从 labels.json 写入，不要手改 */
+:root{
+  --ink:#2B2520; --apricot:#EE9A55; --chip:#FBF8F2; --paper:#F7F2EA;
+  --font:"Noto Sans CJK SC","Source Han Sans SC","PingFang SC",sans-serif;
+  --title-size:56px; --title-weight:700; --tag-size:34px; --tag-weight:600;
+  --tag-border:2px; --dot:12px;
+}
+html,body{margin:0;background:var(--paper)}
+.stage{position:relative}
 .stage img{width:100%;height:100%;display:block}
-.title{position:absolute;left:6%;top:5%;font:700 56px "Noto Sans CJK SC","Source Han Sans SC",sans-serif;color:#2B2520;letter-spacing:1px}
-.tag{position:absolute;font:600 34px "Noto Sans CJK SC","Source Han Sans SC",sans-serif;color:#2B2520;background:#FBF8F2;border:2px solid #2B2520;border-radius:999px;padding:6px 20px;white-space:nowrap}
-.tag::before{content:"";display:inline-block;width:12px;height:12px;border-radius:50%;background:#EE9A55;margin-right:10px;vertical-align:middle}
-</style></head><body><div class="stage">
-<img src="BASE_IMAGE.png" alt="">
-<div class="title">一句话标题</div>
-<!-- 用百分比把标签放到对应物体旁边 -->
-<div class="tag" style="left:12%;top:70%">标签一</div>
-<div class="tag" style="left:60%;top:82%">标签二</div>
-</div></body></html>
+.title{position:absolute;left:6%;top:5%;font:var(--title-weight) var(--title-size) var(--font);color:var(--ink);letter-spacing:1px}
+.tag{position:absolute;font:var(--tag-weight) var(--tag-size) var(--font);color:var(--ink);background:var(--chip);border:var(--tag-border) solid var(--ink);border-radius:999px;padding:6px 20px;white-space:nowrap}
+.tag::before{content:"";display:inline-block;width:var(--dot);height:var(--dot);border-radius:50%;background:var(--apricot);margin-right:10px;vertical-align:middle}
+</style></head><body><div class="stage" id="s"></div>
+<script>
+const L = /*@LABELS*/{"width":1600,"height":1200,"image":"BASE_IMAGE.png","title":"一句话标题","tags":[{"text":"标签一","x":12,"y":70},{"text":"标签二","x":60,"y":82}]}/*@END*/;
+const s=document.getElementById('s'); s.style.width=L.width+'px'; s.style.height=L.height+'px';
+document.body.style.width=L.width+'px'; document.body.style.height=L.height+'px';
+const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+s.innerHTML=`<img src="${L.image}" alt="">`+(L.title?`<div class="title">${esc(L.title)}</div>`:'')+
+  L.tags.map(t=>`<div class="tag" style="left:${t.x}%;top:${t.y}%">${esc(t.text)}</div>`).join('');
+</script></body></html>

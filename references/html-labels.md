@@ -1,19 +1,31 @@
 # 文字：一律用 HTML 后加
 
-生成图里**不出现任何文字**（风格锚点已禁止）。标题、标签、数字都用 HTML/CSS 排在图上，再用无头 Chrome 截图。
-
-## 模板
-
-`assets/templates/label-overlay.html` 是一个可直接改的模板：
-- 底图是 `<img>`，标签是绝对定位的 `<div class="tag">`，用百分比坐标贴在对应物体旁边。
-- 字体：思源黑体 / Noto Sans CJK SC，medium 或 bold；颜色用墨色 `#2B2520`；需要强调时用杏色 `#EE9A55` 小圆点或下划线，不要大色块。
-- 标签 2–6 个，每个尽量 2–8 个字，放在证据物体上或紧挨着它。
-
-## 渲染
+生成图里**不出现任何文字**，风格锚点里已经禁止了。标题和标签只用 `scripts/render_labels.py` 加：
 
 ```bash
-google-chrome --headless=new --disable-gpu --no-sandbox --hide-scrollbars \
-  --force-device-scale-factor=1 --window-size=1600,1200 \
-  --screenshot=/abs/out.png file:///abs/label-overlay.html
+python3 <skill>/scripts/render_labels.py labels.json labeled/a.png
 ```
-`--window-size` 设成和页面一样大；需要高清时用 `--force-device-scale-factor=2`。没有 `google-chrome` 时试 `chromium` / `chromium-browser`。
+
+```json
+{"image": "gen/a-v1.jpg", "aspect": "4:3", "title": "周末的正确用法",
+ "tags": [{"text": "空白屏幕", "x": 8, "y": 30}, {"text": "写代码卫衣", "x": 58, "y": 84}]}
+```
+
+## 固定的部分（写在 `assets/templates/label-overlay.html` 的 `:root` 变量里，不按任务改）
+
+| 项 | 值 |
+|---|---|
+| 页面 | 4:3 → 1600×1200，16:9 → 1600×900，图片铺满 |
+| 字体 | Noto Sans CJK SC / 思源黑体 |
+| 标题 | 56px，粗体，墨色 `#2B2520`，左上角（left 6%、top 5%） |
+| 标签 | 34px，半粗，墨色字，底色 `#FBF8F2` 胶囊，2px 墨色描边，左侧一个杏色圆点 |
+
+## 脚本检查的规则（不合格直接报错）
+
+- 图片比例要和 `aspect` 一致（误差 3% 以内）。
+- 标题 4–16 个字（可以不写标题，但只在用户说不要时省略）。
+- 标签 2–6 个，每个 2–8 个字。
+- 位置用百分比，表示标签的左上角：`x` 0–85，`y` 0–92。标签要放在对应物体上或紧挨着它。
+- 不接受其他字段：字体、字号、颜色不能按任务改。
+
+人眼再看一眼：标签有没有压住角色的脸，有没有超出画面。

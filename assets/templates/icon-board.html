@@ -63,8 +63,8 @@ body{margin:0;background:#F7F2EA;font-family:"Noto Sans CJK SC","Source Han Sans
 .sketch{width:120px;height:120px;border-radius:12px;display:block;margin-top:14px}
 </style></head><body><div class="w" id="app"></div>
 <script>
-/* ===== 只改这里 ===== */
-const BOARD = {
+/* BOARD 由 scripts/render_board.py 从 board.json 写入；下面只是示例数据，不要手改模板 */
+const BOARD = /*@BOARD*/{
   view: "overview",              // "overview" = 三个方案并排总览；"detail" = 每个方案的桌面实测细节；"small" = 定稿大图 + 小尺寸专用帧对比
   title: "搜索工具图标 · 三个方向",
   subtitle: "每个方案：成品、实际尺寸、讲解。推荐的那个带橙色框。",
@@ -74,7 +74,7 @@ const BOARD = {
     // sketch：可选，AI 概念草图路径
     { icon: "export/1/png/app", name: "1 · 水豚当放大镜", elements: "…", pros: "…", cost: "…", rec: true },
   ],
-};
+}/*@END*/;
 /* ===================== */
 const app=document.getElementById('app');
 const I=(o,s,extra='')=>`<img src="${o.icon}-${s}.png" width="${s}" height="${s}" ${extra}>`;

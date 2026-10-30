@@ -89,13 +89,15 @@ git clone https://github.com/sfw003/stoneo-visual.git
 stoneo-visual/
 ├── SKILL.md                 # 入口：角色、风格、流程、文件索引
 ├── references/              # 提示词模板、参考图选择、验收与常见问题、
-│                            # 输出规范、季节/节日限定、HTML 加字、完整示例
+│                            # 输出规范、季节/节日限定、HTML 加字、目录约定、完整示例
 ├── assets/
+│   ├── prompt/parts.json    # 提示词的全部文字（唯一来源）
 │   ├── refs/                # 出图用的参考图（主形象母版、转面、表情、动作、服装、配件）
 │   ├── templates/           # 方案对比板、解释图加标签、图标对比板的 HTML 模板，图标起手 SVG
 │   └── readme/              # 本页配图
-├── scripts/                 # cutout.py 抠图、avatar_preview.py 头像检查、render_board.py 渲染、
-│                            # export_icon.py 图标多尺寸导出
+├── scripts/                 # build_prompt 拼提示词、check_image 验图、cutout 抠图、
+│                            # render_labels 加字、render_board 对比板、finalize 交付打包、
+│                            # check_icon_svg / export_icon 图标检查与导出
 └── agents/openai.yaml
 ```
 

@@ -1,0 +1,246 @@
+{
+ "_comment": "stoneo-visual 提示词唯一来源。build_prompt.py 原样读取；改这里等于改所有出图。A、C、D 段不允许在提示词里手改。",
+ "A": "Edit of the reference image: keep exactly the same capybara character, same face, same proportions and same art style as the reference.\nThe character: a chubby, calm capybara with a big rounded-rectangular head (about 45% of total height), a large blunt muzzle patch in apricot halftone with two small dark nostrils and a tiny simple mouth, two small round ears with apricot inner, an apricot halftone patch on top of the head, and a thin apricot collar band at the neck. Signature look: ONE visible half-lidded eye with a flat heavy upper lid and a small eyebrow line, glancing sideways in a cool deadpan side-eye — calm, unbothered, dry humor.\nShort stubby rounded nub arms attached directly to the sides of the body like Kirby: each arm ends in a plain smooth rounded nub with an apricot halftone tip. NO fingers, NO thumb, NO pointing finger, NO paw digits on the hands. Short stubby legs, rounded feet with three tiny toe lines and apricot halftone tips. Pear-shaped round body, paper white, no tail.",
+ "C": "Style: restrained editorial manga ink illustration, in the spirit of a clean Japanese manga explainer. Warm off-white paper background #F7F2EA with subtle paper fiber texture (not pure white). Clean confident warm near-black ink outlines #2B2520 with varied line weight: thick for outer contours, thin for details; not wobbly, not sketchy. Large areas left as plain paper white — generous white space. Classic circular halftone dot screentone in soft apricot #EE9A55 ONLY on the muzzle, head-top patch, inner ears, nub tips, feet tips and collar (plus at most one small prop accent); props use ink outline with light warm-gray halftone. Colors limited to ink #2B2520, paper #F7F2EA, apricot #EE9A55 and its lighter tints. No solid heavy fills, no gradients, no 3D, no gloss, no photorealism, no extra colors, no green, no pink. No text, letters, numbers, logos, symbols or code anywhere in the image (labels are added later in HTML). No watermark.",
+ "C_paper_sentence": "Warm off-white paper background #F7F2EA with subtle paper fiber texture (not pure white). ",
+ "D": {
+  "A": "Mode: finished explanatory scene on the paper background. One clear focal action, at most three visual regions. Leave clean empty paper areas where labels will be placed later. Small hatched ground shadow under the character.",
+  "B": "Mode: isolated character asset. The background must be a perfectly uniform flat #00FF00 rectangle with zero gradient, texture, noise, shadow or floor plane. Keep generous padding; nothing touches the image border. No ground shadow. No garnish, no extra small objects.",
+  "avatar": "Mode: square social-media avatar. Head-and-shoulders bust in 3/4 view facing left, centered, the head occupying about 55% of the image width, with a wide safe margin on all sides so a circular crop keeps the whole head, both ears and any hat inside the circle. FULL-BLEED square paper background #F7F2EA edge to edge — no circle, no disc, no vignette, no frame, no border. Few elements, clean bold readable silhouette, slightly bold contour lines; the eye must stay large and clear enough to read at 64px."
+ },
+ "hold_suffix": "The nubs do not wrap around the {object}: they are smooth round mitten ends pressed against its sides, exactly like the arm tips in the {ordinal} reference image.",
+ "slots": {
+  "view": {
+   "default": {
+    "zh": "默认 3/4 全身",
+    "text": "3/4 view facing left, full body, centered with generous padding."
+   },
+   "front": {
+    "zh": "正面",
+    "text": "straight front view facing the viewer, symmetrical, both ears and both half-lidded eyes visible, wide blunt muzzle patch.",
+    "ref": "capybara-turn-front.jpg",
+    "ref_rank": 1
+   },
+   "back": {
+    "zh": "背面",
+    "text": "seen from behind, back of head, ears and collar visible, no face.",
+    "ref": "capybara-turn-back.jpg",
+    "ref_rank": 1
+   },
+   "bust": {
+    "zh": "半身",
+    "text": "head-and-shoulders close-up (bust portrait), same 3/4 view facing left."
+   },
+   "sitting": {
+    "zh": "坐姿",
+    "text": "sitting on the floor in 3/4 view facing left, full body."
+   },
+   "side": {
+    "zh": "侧身（实际偏 3/4）",
+    "text": "side view facing left, full body (it will still read slightly 3/4).",
+    "ref": "capybara-turn-side.jpg",
+    "ref_rank": 1
+   }
+  },
+  "action": {
+   "point": {
+    "zh": "指东西",
+    "text": "the front nub arm raised forward toward the empty left side of the image, the direction shown only by the angle of the arm plus two tiny ink motion ticks; the other nub rests at its side. Leave the left third of the image empty.",
+    "ref": "pose-point-nub.jpg",
+    "ref_rank": 3,
+    "holds": false,
+    "nub_ref": true
+   },
+   "hold_card": {
+    "zh": "拿卡片",
+    "text": "holds up a small blank paper card in front of its chest, both nub arms pressed against the two sides of the card.",
+    "ref": "pose-hold-card.jpg",
+    "ref_rank": 3,
+    "holds": true,
+    "object": "card"
+   },
+   "typing": {
+    "zh": "敲键盘",
+    "text": "sits on a low round cushion in front of a small open laptop, both nub tips resting on the keyboard; the laptop screen faces away and shows only its plain back lid.",
+    "ref": "pose-typing-laptop.jpg",
+    "ref_rank": 3,
+    "holds": false
+   },
+   "eat_noodles": {
+    "zh": "吃面",
+    "text": "holds a round noodle bowl at chest height cradled between both nub arms, slurping noodles from the bowl, chopsticks resting in the bowl, a tiny ink steam curl.",
+    "holds": true,
+    "object": "bowl"
+   },
+   "game": {
+    "zh": "打游戏",
+    "text": "sits on the floor holding a simple rounded game controller in front of its belly, nub tips resting on the two grips, plain round buttons with no symbols.",
+    "holds": true,
+    "object": "controller"
+   },
+   "shrug": {
+    "zh": "摊手",
+    "text": "shrugs, both nub arms raised outward at shoulder height, nub tips turned up, two tiny ink motion ticks near the shoulders.",
+    "ref": "pose-shrug-nub-hands.jpg",
+    "ref_rank": 3,
+    "holds": false
+   },
+   "mug": {
+    "zh": "捧杯子",
+    "text": "holds a simple round mug in front of its chest cradled between both nub arms, the drink rendered as light apricot halftone, two thin ink steam curls.",
+    "holds": true,
+    "object": "mug"
+   }
+  },
+  "expression": {
+   "deadpan": {
+    "zh": "淡定斜眼（默认）",
+    "text": "calm half-lidded deadpan side-eye."
+   },
+   "smug": {
+    "zh": "轻微得意",
+    "text": "the side-eye narrowed a little with a knowing look, eyebrow slightly arched, chin slightly raised; the ONLY mouth is the tiny mouth inside the muzzle, curved up at one corner in a subtle smirk. No extra mouth on the cheek.",
+    "ref": "expr-smug.jpg",
+    "ref_rank": 0
+   },
+   "speechless": {
+    "zh": "无语",
+    "text": "eye fully flat with a perfectly straight heavy upper lid, pupil looking at the viewer, mouth a tiny flat line, one small ink-outline sweat drop near the forehead."
+   },
+   "focus": {
+    "zh": "专注（自动带 expr-focus-calm.jpg）",
+    "text": "calm focus exactly like the second reference image — eye a little more open with a soft relaxed upper lid covering the top third, pupil looking down toward the task, eyebrow relaxed, gently curved and level (not lowered, not angled), mouth a flat neutral line. Serene, not glaring.",
+    "ref": "expr-focus-calm.jpg",
+    "ref_rank": 0
+   },
+   "content": {
+    "zh": "满足",
+    "text": "eye closed into a gentle downward happy arc, tiny contented smile inside the muzzle, two tiny ink sparkles, a faint apricot halftone blush on the cheek."
+   },
+   "sleepy": {
+    "zh": "困",
+    "text": "eye closed as one heavy drooping line with no eyelashes, head drooping forward to one side, mouth slightly open, no tongue. Nothing attached to the nose, no bubble, no Z."
+   }
+  },
+  "outfit": {
+   "tee": {
+    "zh": "T 恤",
+    "text": "wears a simple short-sleeve tee in very light apricot halftone, mostly paper white with sparse dots, one small dot on the chest.",
+    "ref": "outfit-tee.jpg",
+    "ref_rank": 2
+   },
+   "hoodie": {
+    "zh": "写代码卫衣",
+    "text": "wears a warm light-gray halftone hoodie with apricot drawstrings and an apricot halftone front pocket.",
+    "ref": "outfit-hoodie-coding.jpg",
+    "ref_rank": 2
+   },
+   "jacket": {
+    "zh": "浅卡其外套",
+    "text": "wears a zip-up jacket in warm light khaki (#E6D3B3) halftone with two simple patch side pockets low on the front, and exactly ONE apricot backpack strap over the far shoulder only. No green.",
+    "ref": "outfit-jacket-khaki.jpg",
+    "ref_rank": 2
+   }
+  },
+  "accessory": {
+   "headphones": {
+    "zh": "耳机",
+    "text": "wears simple over-ear headphones with a thin ink band over the head; BOTH ear cups visible, the far ear cup peeking out behind the head.",
+    "ref": "acc-headphones.jpg",
+    "ref_rank": 4
+   },
+   "mandarin": {
+    "zh": "头顶小橘子",
+    "text": "a small mandarin sits on top of its head, drawn as a pale apricot halftone circle with ink outline and one tiny leaf — NOT a glossy saturated orange.",
+    "ref": "acc-mandarin.jpg",
+    "ref_rank": 4
+   },
+   "scarf": {
+    "zh": "冬季围巾",
+    "text": "a chunky knitted scarf in apricot halftone wrapped around the neck, replacing the collar, a few simple knit lines."
+   },
+   "snowflakes": {
+    "zh": "雪花",
+    "text": "three or four small simple snowflakes as thin ink six-point stars with very light cool-gray halftone, two resting on top of the head between the ears."
+   },
+   "beanie": {
+    "zh": "毛线帽",
+    "text": "a simple knitted beanie with a small pom-pom and ribbed fold in light warm-gray halftone; both ears poke out at the sides."
+   }
+  }
+ },
+ "seasons": {
+  "winter": {
+   "expression": "calm half-lidded deadpan side-eye glancing upward at the snowflakes on its head, a faint apricot halftone blush on the cheek from the cold.",
+   "accessory": "a chunky knitted scarf in apricot halftone wrapped around the neck, replacing the collar, a few simple knit lines. Three or four small simple snowflakes as thin ink six-point stars with very light cool-gray halftone, two resting on top of the head between the ears.",
+   "zh": "冬季",
+   "verified": true,
+   "holds": false
+  },
+  "summer": {
+   "expression": "calm half-lidded deadpan side-eye, totally unbothered by the heat.",
+   "accessory": "a simple woven straw sun hat with a thin apricot halftone band, drawn in ink with light warm-gray halftone; both ears visible under the brim.",
+   "scene": "holds a slice of watermelon between both nub arms, the flesh drawn as apricot halftone (not red) with a few tiny ink seeds and a pale rind; one tiny ink sweat drop.",
+   "zh": "夏季",
+   "verified": false,
+   "holds": true,
+   "object": "watermelon slice"
+  },
+  "spring_festival": {
+   "expression": "calm half-lidded deadpan side-eye with a very subtle smirk.",
+   "accessory": "wears a simple padded Chinese-style jacket with frog buttons, in very light apricot halftone, mostly paper white with sparse dots.",
+   "scene": "holds a small plain red-envelope-shaped packet rendered in apricot halftone (NOT red), completely blank with no characters or symbols; one small round paper lantern in apricot halftone hanging nearby, no tassel text. No red, no gold, no Chinese characters, no 福.",
+   "zh": "春节",
+   "verified": false,
+   "holds": true,
+   "object": "packet"
+  },
+  "spring": {
+   "accessory": "two or three small five-petal blossoms resting on top of the head, drawn as thin ink outlines with very light apricot halftone (NOT pink).",
+   "scene": "a few tiny petals drifting nearby, ink outline only.",
+   "zh": "春季",
+   "verified": false,
+   "holds": false
+  },
+  "mid_autumn": {
+   "scene": "holds a round mooncake between both nub arms, drawn in apricot halftone with a simple blank ink pattern (no characters); a large pale full moon behind the head as a thin ink circle with very light warm-gray halftone.",
+   "zh": "中秋",
+   "verified": false,
+   "holds": true,
+   "object": "mooncake"
+  },
+  "halloween": {
+   "accessory": "a small carved pumpkin sits on top of its head in apricot halftone with a simple ink face, NOT glossy, NOT saturated orange.",
+   "zh": "万圣节",
+   "verified": false,
+   "holds": false
+  },
+  "christmas": {
+   "accessory": "a simple Santa-style hat in apricot halftone (NOT red) with a paper-white fluffy trim and pom-pom; both ears poke out.",
+   "scene": "one small pine sprig in light warm-gray halftone (NOT green).",
+   "zh": "圣诞",
+   "verified": false,
+   "holds": false
+  },
+  "birthday": {
+   "accessory": "a small cone party hat with thin apricot halftone stripes, tilted on the head.",
+   "scene": "holds a small round cake between both nub arms, paper white frosting with apricot halftone dots and one plain candle with a tiny ink flame. No text on the cake.",
+   "zh": "生日",
+   "verified": false,
+   "holds": true,
+   "object": "cake"
+  }
+ },
+ "fix": "Edit of the first reference image: keep everything exactly the same — same character, pose, composition, background, colors, line style and halftone. Change ONLY this: {change} Do not change anything else. No text anywhere in the image.",
+ "refs_rules": {
+  "master": "capybara-master-34view.jpg",
+  "nub": "pose-shrug-nub-hands.jpg",
+  "avatar": "avatar-winter-snow-scarf.jpg",
+  "max": 3
+ },
+ "icon_sketch": "Desktop APP ICON concept for {product}. {concept} Centered on a rounded-square app icon tile in {plate}. Flat vector icon style: very thick uniform ink lines #2B2520, solid flat fills only, rounded caps, apricot #EE9A55 used in exactly one place ({accent}). NO halftone dots, NO paper texture, NO thin lines, NO gradients, NO shadows, NO text. Bold simple shapes readable at 32px.",
+ "icon_plates": {
+  "paper": "paper color #F7F2EA",
+  "ink": "dark ink #2B2520"
+ }
+}

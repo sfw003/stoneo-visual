@@ -25,20 +25,19 @@
    - 水豚特征和功能符号合成一个形状（最有辨识度）；
    - 纯功能符号 + 一处杏橘（最简洁、小尺寸最好）；
    - 水豚整只或半只 + 功能道具（最有个性，小尺寸最弱）。
-3. **（可选）AI 概念草图**：每个方向一张，用来定构图，不进成品。
-   - 参考图：`assets/refs/capybara-master-34view.jpg`（第 1 张，保证斜眼和耳朵是这只水豚）。
-   - 提示词**不要**拼 prompt-template 的 C 风格锚点（那段要求网点和纸纹）。改用下面这段：
-     ```text
-     Desktop APP ICON concept for {PRODUCT}. {CONCEPT}. Centered on a rounded-square app icon tile in {paper color #F7F2EA | dark ink #2B2520}. Flat vector icon style: very thick uniform ink lines #2B2520, solid flat fills only, rounded caps, apricot #EE9A55 used in exactly one place ({WHERE}). NO halftone dots, NO paper texture, NO thin lines, NO gradients, NO shadows, NO text. Bold simple shapes readable at 32px.
-     ```
-   - 草图常见问题：换底色、多出第二种强调色、水豚画成小熊、放大镜像棒棒糖。只取构图，颜色以本文件为准。
+3. **（可选）AI 概念草图**：每个方向一张，用来定构图，不进成品。用 `build_prompt.py` 的 mode `icon_sketch` 生成提示词（它会自动带母版参考图，并且不拼网点和纸纹的风格锚点）：
+   ```json
+   {"mode": "icon_sketch", "product": "a fast desktop file-search tool", "concept": "a magnifying glass whose lens is the capybara side-eye", "plate": "paper", "accent": "the inner ears"}
+   ```
+   草图常见问题：换底色、多出第二种强调色、水豚画成小熊、放大镜像棒棒糖。只取构图，颜色以本文件为准。
 4. **手写 SVG**：从 `assets/templates/icon-plate.svg` 复制起步，按第 1 节的规则画。已有的写法示例在 `references/examples/icons/`。
    - 只用 `rect / circle / line / path / clipPath` 这些基本元素，不用滤镜、`mask`、外部图片和字体。
    - 底板必须带 `data-role="plate"`，浅边带 `data-role="plate-edge"`，导出移动端时脚本靠它们识别。
    - 斜眼的画法：一条平直的粗上眼皮（横线），黑眼珠是一个圆、只保留上眼皮**以下**的部分（用 clipPath 裁），眼珠靠向一侧。这样小尺寸也是“半眯眼斜着看”。
-5. **自查小尺寸**：用 `export_icon.py` 导出后，看 16 / 24 / 32 / 64px 原大和放大图。认不出就改，改完再导。大图删到不能再删还认不出时，按第 3 节另画小尺寸帧。
-6. **对比板**：见第 5 节。这一步只交对比板，**不导出 ico / icns**，等用户选定。
-7. **选定后导出**：跑 `export_icon.py`（第 4 节），交付 SVG 源文件 + `.ico` + `.icns` + PNG 全套，打包成 zip 以文件附件发给用户；同时单独附上 1024×1024 PNG。
+5. **规范检查**：`python3 <skill>/scripts/check_icon_svg.py svg/*.svg`。有 ERROR 必须改完（规则见第 8 节）。
+6. **自查小尺寸**：用 `export_icon.py svg/a-large.svg export/a [--small svg/a-small.svg]` 导出，看 16 / 24 / 32 / 64px 原大和放大图。认不出就改，改完再导。大图删到不能再删还认不出时，按第 3 节另画小尺寸帧。
+7. **对比板**：见第 5 节。这一步只交对比板，**不打包交付**，等用户选定。
+8. **选定后打包**：`finalize.py icon --large … [--small …] --out final --name <slug>`。它会先跑 `check_icon_svg.py`，再导出桌面和移动端全套，复制 SVG 源文件，写 manifest，打成 zip。把 `final/<slug>.zip` 以文件附件发给用户，同时附上 `png/<name>-1024.png`。不要手动调用 export_icon 再自己打包。
 
 ## 3. 大图和小尺寸分开画
 
@@ -47,16 +46,18 @@
 - **什么时候要分**：构图里有角色 + 道具、或者 3 个以上元素，32px 时已经挤、16px 认不出。只有一个符号（比如纯放大镜）的图标不用分。
 - **分界线**：默认 32px（`--small-max 32`）。大图管 48px 以上（桌面、Dock、开始菜单大图标），小图管 16/24/32（标题栏、任务栏、文件列表、托盘）。
 - **小图怎么画**：
-  - 是大图的**简化版**，讲的是同一个画面，颜色、底板、元素位置都对得上。用户在任务栏看到小图、在桌面看到大图，要一眼知道是同一个应用。换一个画面（比如大图放大镜在头顶、小图放大镜套在眼睛上）虽然更清楚，但会像两个图标，只在用户明确接受时才用。
+  - 默认是大图的**简化版**，讲的是同一个画面，颜色、底板、元素位置都对得上，让用户一眼知道任务栏里的小图和桌面上的大图是同一个应用。换一个画面（比如大图放大镜在头顶、小图放大镜套在眼睛上）16px 更清楚，但会像两个图标，只在用户明确选了时才用。搜索工具这个实例，用户就选了换画面的 S3。
   - 只留 3 样：主体轮廓、一个识别点（斜眼：一道横线 + 一个黑点）、杏橘那一处。删掉眉线、鼻孔、耳朵这类加分细节；功能符号缩小但保留，不保留就看不出是干什么的。
   - 主体放大，尽量顶满底板，元素之间至少留 1 像素（16px 时）的空。
-  - **在 32 格网上画**：`viewBox="0 0 32 32"`，底板 `x=y=2`、边长 28、`rx=6.5`（和 1024 版等比）。主线宽 2：落在 16px 正好 1 像素、32px 正好 2 像素。线的中心放在**奇数**坐标上（比如横线 `y=21`），填充块的边放在**偶数**坐标上（比如 `x=6`），这样 16 和 32px 都对齐整像素，不发虚。24px 对不齐是正常的，看一眼不糊就行。
+  - **在 32 格网上画**：`viewBox="0 0 32 32"`，底板 `x=y=2`、边长 28、`rx=6.5`（和 1024 版等比）。主线宽 2：落在 16px 正好 1 像素、32px 正好 2 像素。横竖方向、偶数线宽的线，中心必须放在**奇数**坐标上（比如横线 `y=21`），`check_icon_svg.py` 会报错拦住。填充块的边最好放在偶数坐标上（比如 `x=6`），至少要落在整数上，否则脚本给 WARN。这样 16 和 32px 都对齐整像素，不发虚。24px 对不齐是正常的，看一眼不糊就行。
   - 小图同样要带 `data-role="plate"` / `plate-edge`。
-- **导出**：`export_icon.py big.svg outdir/ --small small.svg [--small-max 32]`。≤ 分界线的 PNG、`.ico` 帧和 `.icns` 槽（16@2x 实际是 32px，用小图；32@2x 是 64px，用大图）都从小图渲染，移动端只用大图。脚本会打印哪些尺寸用了小图。
-- **对比板**：`icon-board.html` 的 `view: "small"`。顶上是大图（48/64/128 + Dock），中间一行“旧版 vs 新版”的 16/32px，下面三个小图写法并排，各自带 16–64 原大、像素放大和 Windows 任务栏。`options[].icon` 指向带 `--small` 导出的 `png/` 前缀，这样 16–32 是小图、48 以上是大图，和真实文件一致。
-- 示例：`references/examples/icons/search-3-peek.svg`（大图）和 `search-3-peek-small-s1/s2/s3.svg`（三种小图写法）。
+- **导出**：`export_icon.py big.svg outdir/ --small small.svg [--small-max 32]`；交付时由 `finalize.py icon --small` 调用，分界线固定 32。≤ 分界线的 PNG、`.ico` 帧和 `.icns` 槽（16@2x 实际是 32px，用小图；32@2x 是 64px，用大图）都从小图渲染，移动端只用大图。脚本会打印哪些尺寸用了小图。
+- **对比板**：board.json 里写 `"view": "small"`。顶上是大图（48/64/128 + Dock），中间一行“旧版 vs 新版”的 16/32px，下面三个小图写法并排，各自带 16–64 原大、像素放大和 Windows 任务栏。`options[].icon` 指向带 `--small` 导出的 `png/` 前缀，这样 16–32 是小图、48 以上是大图，和真实文件一致。
+- 示例：`references/examples/icons/search-3-peek.svg`（大图）和 `search-3-peek-small-s1/s2/s3.svg`（三种小图写法，用户最后选了 S3）。
 
 ## 4. 导出
+
+交付用 `finalize.py icon`（固定带 `--mobile`，目录和命名都写死）。下面这些单独的命令只用于对比板和自查：
 
 ```bash
 python3 <skill>/scripts/export_icon.py icon.svg outdir/ --name myapp           # 桌面
@@ -79,18 +80,25 @@ python3 <skill>/scripts/export_icon.py icon.svg outdir/ --name myapp --small ico
 
 ## 5. 对比板
 
-模板：`assets/templates/icon-board.html`。复制到工作目录，只改顶部 `BOARD`。宽 1080，手机上也能看清。一套出两张：
+只用 `render_board.py` 从 board.json 渲染（宽 1080，手机上也能看清），规则见 `output-format.md`。三种 `view`：
 
-- `view: "overview"`：三个方案并排。成品大图、元素 / 优点 / 代价、浅色和深色底上的 64/32/16px 原大、32 和 16px 的像素放大图。高度约 1000px。
-- `view: "detail"`：每个方案一块。16/24/32/48/64 原大（浅、深两种底），再放进四个模拟桌面：Windows 任务栏浅色 / 深色（任务栏 24px 图标 + 桌面 48px 图标和名字），macOS Dock 浅色 / 深色。别的应用用中性灰色圆角块占位，不模仿任何真实品牌。三个方案约 2600px。
+- `overview`：三个方案并排。每个方案有成品大图、元素 / 优点 / 代价、浅色和深色底上的 64/32/16px 原大、32 和 16px 的像素放大图。高度约 1000px。
+- `detail`：每个方案一块。16/24/32/48/64 原大（浅、深两种底），再放进四个模拟桌面：Windows 任务栏浅色 / 深色（任务栏 24px 图标 + 桌面 48px 图标和名字）、macOS Dock 浅色 / 深色。别的应用用中性灰色圆角块占位，不模仿任何真实品牌。三个方案约 2600px。
+- `small`：定稿大图加三个小尺寸写法，见第 3 节。
 
 ```bash
-python3 <skill>/scripts/export_icon.py a.svg export/1 --name app   # 每个方案各导一次，只为拿 png/
-python3 <skill>/scripts/render_board.py board-overview.html compare-overview.png --width 1080
-python3 <skill>/scripts/render_board.py board-detail.html compare-detail.png --width 1080
+python3 <skill>/scripts/export_icon.py svg/a-large.svg export/a      # 每个方案各导一次，只为拿 png/
+python3 <skill>/scripts/render_board.py board-overview.json compare-overview.png
+python3 <skill>/scripts/render_board.py board-detail.json compare-detail.png
 ```
 
-`options[].icon` 写 PNG 前缀，比如 `export/1/png/app`。“代价”里必须写清楚 16px 时实际丢了什么。推荐只给一个；如果实测发现推荐的方向在小尺寸明显不如别的，照实写。
+```json
+{"board": "icon", "view": "overview", "title": "搜索工具图标 · 三个方向", "appName": "文件搜索",
+ "options": [{"icon": "export/a/png/app", "name": "1 · 水豚当放大镜", "elements": "镜片就是水豚的斜眼，顶上两只杏色小圆耳",
+              "pros": "一眼是搜索，又一眼是你的水豚", "cost": "16px 时眼睛只剩一条横线加一个黑点", "rec": true}, ...]}
+```
+
+“代价”里必须写清楚 16px 时实际丢了什么。推荐只给一个；如果实测发现推荐的方向在小尺寸明显不如别的，照实写。
 
 ## 6. 个人 logo / favicon
 
@@ -101,3 +109,19 @@ python3 <skill>/scripts/render_board.py board-detail.html compare-detail.png --w
 - 16px 下水豚的特征基本只剩轮廓：斜眼剩一条横线加一个点，耳朵的杏色看不出来。功能符号（放大镜、文件）比角色特征更耐缩小。另画小尺寸帧能救回来一部分，但 16px 仍然只是“认得出是它”，看不清表情。
 - 圆耳放在圆形上方容易被看成小熊。耳朵画小一点、贴紧一点会好些。
 - AI 草图的颜色不可信，见第 2 节第 3 步。
+
+## 8. SVG 规范（`check_icon_svg.py` 逐条检查）
+
+| 项 | 大图（1024 格） | 小图（32 格） |
+|---|---|---|
+| viewBox | `0 0 1024 1024` | `0 0 32 32` |
+| 底板 `data-role="plate"`，必须是第一个绘制元素 | `x=y=64`，边长 896，`rx=208` | `x=y=2`，边长 28，`rx=6.5` |
+| 底板颜色 | 纸色 `#F7F2EA` 或墨色 `#2B2520` | 同左 |
+| 浅边 `data-role="plate-edge"` | 纸色底板必须有：`70/70/884/884`、`rx=202`、`stroke=#E3D8C8`、宽 12；墨色底板不能有 | 纸色底板必须有：`2.5/2.5/27/27`、`rx=6`、`stroke=#DDD1C0`、宽 1 |
+| 允许的颜色 | 墨、纸、杏 `#EE9A55`、亮纸白 `#FFFDF8`、浅边色、`none` | 同左 |
+| 最细线宽 | 40 | 2 |
+| 网格对齐 | — | 横竖方向、偶数宽的线，中心必须在奇数坐标上（ERROR）；填充块边不在整数上（WARN） |
+| 禁止 | `<text>`、`<image>`、渐变、`<pattern>`、`<filter>`、`<mask>`、`<use>`、`<style>`、`style=`、`opacity`、虚线、外部链接 | 同左 |
+| 杏橘 | 用在超过 2 个元素上时 WARN（一对耳朵算一处） | 同左 |
+
+注释里不能出现 `--`（XML 不允许），脚本会报“not well-formed”。

@@ -1,0 +1,5 @@
+{"mode": "A", "aspect": "4:3",
+ "view": {"text": "3/4 view facing left, full body, standing in the right half of the image."},
+ "action": {"text": "the front nub arm raised forward toward the empty left side of the image, the direction shown only by the angle of the arm plus two tiny ink motion ticks; the other nub rests at its side.", "holds": false, "nub_ref": true},
+ "expression": "deadpan",
+ "scene": "on the left side stands a simple paper flip-chart easel showing a plain bar chart with four rising bars (ink outline, light warm-gray halftone bars, the tallest bar in apricot halftone), no axis labels, no numbers."}

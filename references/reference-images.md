@@ -24,11 +24,12 @@
 | `avatar-winter-snow-scarf.jpg` | 冬季头像：围巾 + 头顶落雪 | 头像模式的构图范本；冬季 / 节日限定图 |
 | `character-sheet.jpg` | 整张角色设定板（转面、表情、动作、服装与配件、模板实测） | **给人看 / 给 agent 读的总览**，不要放进 reference_image_paths（拼图会被模型当成要画的内容） |
 
-## 怎么选（最多 2–3 张）
+## 怎么选：由 `build_prompt.py` 自动决定
+
+参考图不手选，`job.json` 的 `reference_image_paths` 是什么就传什么。规则（写在 `assets/prompt/parts.json` 的 `refs_rules` 和各预设的 `ref` / `ref_rank` 里）：
 
 1. 第 1 张永远是 `capybara-master-34view.jpg`。
-2. 第 2 张按“这张图最难画对的东西”选，优先级：
-   专注表情 / 正面 / 背面 > 服装 > 动作 > 配件 > 头像构图。
-3. **只要画面里手要拿 / 握 / 捧东西（手柄、杯子、碗、卡片……），必须加 `pose-shrug-nub-hands.jpg` 作第 3 张**。实测：不加时手柄场景长出了弯曲的手指，而且事后局部 edit 也修不掉；加上后一次通过。
-4. 不要超过 3 张；参考图越多，角色特征越容易被“平均”掉。
-5. 修一张已有的图：把那张图放第 1 张，只写“只改这一处”的 edit 提示词（见 `troubleshooting.md`）。
+2. 第 2 张选“这张图最难画对的东西”：表情 > 转面（正面 / 背面）> 服装 > 动作 > 配件 > 头像构图（`avatar-winter-snow-scarf.jpg`，仅头像模式）。自由文字槽位不带参考图。
+3. 只要拿 / 握 / 捧东西（预设动作、season 自带的道具，或自由文字写了 `"holds": true`），以及 `"nub_ref": true` 的动作（如指向），都会把 `pose-shrug-nub-hands.jpg` 放进来。实测：不加时手柄场景长出了弯曲的手指，事后局部 edit 也修不掉；加上后一次通过。
+4. 所以最多 3 张：母版 + 优先级最高的 1 张 + 需要时的短圆手。其余槽位的参考图不带，只靠文字。参考图越多，角色特征越容易被“平均”掉。
+5. 修一张已有的图：mode `fix`，那张图自动放第 1 张，不带母版（见 `troubleshooting.md`）。
