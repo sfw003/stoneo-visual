@@ -90,4 +90,4 @@ git clone https://github.com/sfw003/stoneo-visual.git
 
 结构与工作流参考了 [oil-visual](https://github.com/oil-oil/oil-visual)。其中 [`scripts/cutout.py`](./scripts/cutout.py) 改编自其同名脚本，沿用 MIT 许可；原版权声明和完整条款保留在 [`scripts/LICENSE-oil-visual`](./scripts/LICENSE-oil-visual)。复制或分发该部分时，须保留版权与许可声明。
 
-其余脚本、文档、角色形象和参考图的许可见根目录 `LICENSE`。
+本仓库整体（包括脚本、文档、水豚角色形象和图片）以 [MIT 许可](./LICENSE) 开源。
