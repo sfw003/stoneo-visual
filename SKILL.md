@@ -75,7 +75,7 @@ disable-model-invocation: true
 - `references/output-format.md`：对比板 `board.json` 规范和选定后的交付。
 - `references/icon-mode.md`：图标系列规则、SVG 规范、大小图分开画、导出规格。
 - `references/examples/`：已验证的 spec 和由它们生成的提示词，以及图标 SVG 示例。
-- `scripts/`：`build_prompt.py`、`check_image.py`、`cutout.py`、`render_labels.py`、`render_board.py`、`check_icon_svg.py`、`export_icon.py`、`finalize.py`、`install.sh`（提交后同步，钩子自动运行）。
+- `scripts/`：`build_prompt.py`、`check_image.py`、`cutout.py`、`render_labels.py`、`render_board.py`、`check_icon_svg.py`、`export_icon.py`、`finalize.py`、`install.sh`（把干净版本装到指定 skills 目录）。
 - `assets/`：`refs/` 参考图、`prompt/parts.json` 提示词片段、`templates/` 对比板、加字和图标起手 SVG。
 
 ## 6. 已知局限

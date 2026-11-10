@@ -31,6 +31,8 @@ git clone https://github.com/sfw003/stoneo-visual.git
 
 按宿主说明重新加载 Skill，确认它能识别 `stoneo-visual/SKILL.md`。
 
+也可以把仓库克隆到别处，再用 `sh scripts/install.sh <skills 目录>` 装一份不带 `.git` 的干净版本。
+
 ### 需要什么
 
 - **Agent 能力**：读图、执行本地脚本，以及能带参考图进行编辑的生图工具。当前流程按 `GenerateImage` 工具编写；其他宿主需要对应适配，并非只复制文件就能运行。
