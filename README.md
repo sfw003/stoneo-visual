@@ -1,121 +1,93 @@
 <p align="center">
-  <img src="./assets/readme/banner.jpg" width="100%" alt="stoneo-visual：一只沉稳、斜眼看人的水豚">
+  <img src="./assets/readme/banner.jpg" width="100%" alt="stoneo-visual：沉稳、半眯眼斜看人的水豚">
 </p>
 
-<p align="center"><b>一只沉稳、斜眼看人的水豚，用克制的漫画墨线和杏色网点，替你画解释图、插画和头像。</b></p>
+<p align="center"><b>给 AI Agent 用的水豚配图 Skill，为文章、产品和个人主页制作同一角色风格的解释图、透明插画、头像与图标。</b></p>
 
-stoneo-visual 是一个给 AI Agent 用的出图 Skill。它把一只固定的水豚角色、一套固定的画法和一条固定的出图流程打包在一起：每次都以参考图为底让宿主的生图工具做 edit，所以不管画什么场景，出来的都是同一只水豚、同一种味道。图里不生成任何文字，标题和标签都用 HTML 后加，不会有错字。
-
-## 效果展示
-
-### 解释图
+## 看看效果
 
 <p align="center">
-  <img src="./assets/readme/demo-explainer-gaming.jpg" width="49%" alt="解释图：穿卫衣的水豚坐在电视前拿着手柄打游戏，配有中文标题和标签">
-  <img src="./assets/readme/demo-explainer-chart.jpg" width="49%" alt="解释图：水豚用圆头短手指向一张没有文字的柱状图">
+  <img src="./assets/readme/demo-explainer-gaming.jpg" width="49%" alt="解释图：穿卫衣打游戏的水豚，标题和标签用 HTML 后加">
+  <img src="./assets/readme/demo-explainer-chart.jpg" width="49%" alt="解释图：水豚指向无字柱状图">
 </p>
 
-左图：穿卫衣打游戏，标题和两个标签是用 HTML 叠上去的。右图：用短圆手指着一张柱状图，图表上没有字，方便你之后加上自己的数据。
-
-### 透明插画与头像
+<p align="center">解释图 · 先画场景，再用 HTML 加标题和标签。</p>
 
 <p align="center">
-  <img src="./assets/readme/demo-transparent-noodles.png" width="36%" alt="透明插画：穿 T 恤的水豚端碗吃面，透明背景">
+  <img src="./assets/readme/demo-transparent-noodles.png" width="36%" alt="透明插画：穿 T 恤吃面的水豚">
   &nbsp;&nbsp;
-  <img src="./assets/readme/demo-avatar-winter.jpg" width="40%" alt="冬季限定头像：戴杏色围巾的水豚，头顶落了几片雪花，淡定地往上斜眼">
+  <img src="./assets/readme/demo-avatar-winter.jpg" width="40%" alt="冬季头像：戴杏色围巾、头顶落雪的水豚">
 </p>
 
-左图：透明背景的吃面插画，可以直接放进文章、卡片或幻灯片。右图：冬季限定头像，戴着围巾，对头上的雪淡定地斜眼。
+<p align="center">透明插画可直接放进排版；头像会检查圆形裁切和小尺寸效果。</p>
 
-## 能做什么
+## 安装
 
-- **解释图**：水豚在一个完整场景里演示一件事（比较、流程、状态），画面留出空白，之后用 HTML 加标题和标签。
-- **透明插画**：只画水豚和必要的道具，绿幕出图后自动抠成透明 PNG，拿去任何排版里用。
-- **头像 / 季节节日限定**：方形构图，圆形裁切也不会切到耳朵，并会检查 64px 和 32px 下还认不认得出来。主形象换上围巾、草帽等配件，就是季节和节日版本。
-- **应用图标 / logo**：给你的桌面应用、开源产品做图标，也能做个人 logo 和 favicon。所有图标一个系列：同样的圆角底板、墨色粗线，杏橘只用一处，水豚只借一个特征。成品是手写的 SVG，一条命令导出 16–1024 的 PNG、Windows `.ico`、macOS `.icns`，以及 iOS、Android、鸿蒙要的格式。
-
-## 怎么用
-
-### 安装
-
-把整个 `stoneo-visual` 文件夹放进你所用 Agent 的 skills 目录（不同宿主的位置不一样，以宿主文档为准），然后让宿主重新加载 Skill。
-
-这是私有仓库，需要有访问权限才能克隆：
+将整个仓库放进你所用 Agent 的 **skills 目录**。在该目录下运行：
 
 ```bash
-git clone git@github.com:sfw003/stoneo-visual.git
-# 或
 git clone https://github.com/sfw003/stoneo-visual.git
 ```
 
-### 直接这样说
+按宿主说明重新加载 Skill，确认它能识别 `stoneo-visual/SKILL.md`。
+
+### 需要什么
+
+- **Agent 能力**：读图、执行本地脚本，以及能带参考图进行编辑的生图工具。当前流程按 `GenerateImage` 工具编写；其他宿主需要对应适配，并非只复制文件就能运行。
+- **Python 3**（建议 3.10+），以及 Pillow、cairosvg：
+
+  ```bash
+  python3 -m pip install "pillow>=10" cairosvg
+  ```
+
+- **Chrome / Chromium**：可执行文件需在 `PATH` 中，用于将 HTML 标签和对比板渲染成图片。中文排版建议安装 Noto Sans CJK SC 或思源黑体。
+
+生图由宿主提供；仓库本身不包含生图服务。
+
+## 直接这样说
 
 ```text
-用 stoneo-visual 画一张解释图：水豚指着一张上升的柱状图，标题写“这个月的进度”。
+用 stoneo-visual 画一张解释图：水豚指着上升的柱状图，标题写“这个月的进度”。
 ```
 
 ```text
-用 stoneo-visual 画一个透明背景的插画：水豚戴着耳机敲键盘，用来放在文章开头。
+用 stoneo-visual 画一张透明插画：水豚戴耳机敲键盘，放在文章开头。
 ```
 
 ```text
-用 stoneo-visual 给我出一个春节限定头像，给我 3 个方案对比一下。
+用 stoneo-visual 做一个冬季头像，给我 3 个方案对比。
 ```
 
-默认会给 3 个方案，做成一张对比板：每个方案一行，包括原图、一句讲解（用了哪些元素、好在哪、代价是什么），以及放进实际用途里的效果。头像会给出圆形裁切、64px 和 32px 预览，以及浅色、深色界面下的样子；配图会放进文章和卡片里演示。推荐的方案会单独标出来。你选定后，会单独导出 1024×1024 的高清 PNG；解释图按原比例导出。
+默认先出 3 个方案，附对比板和推荐理由；选定后导出成品 PNG。只需要一张时可以直接说明。应用图标和 logo 使用手写 SVG，可导出多尺寸 PNG、ICO、ICNS 等格式。
 
-完整规则、提示词模板和验收清单都在 [`SKILL.md`](./SKILL.md) 里。
+出图以参考图约束角色和画法；生成画面不带文字，标题、标签随后排版。脚本负责拼提示词、检查图片、抠图、渲染和打包，角色是否走样仍需 Agent 看图确认。
 
-## 角色和风格
+## 角色与画法
 
 <p align="center">
-  <img src="./assets/readme/character-sheet.jpg" width="100%" alt="水豚角色设定图：转面、表情、常用动作、服装与配件、模板实测">
+  <img src="./assets/readme/character-sheet.jpg" width="100%" alt="水豚设定：转面、表情、动作、服装和配件">
 </p>
 
-- **性格**：沉稳，带一点冷幽默。默认表情是半眯着眼、斜着看人。
-- **外形**：圆胖的纸白身体，大圆角方头，杏色网点的钝吻部。手是像星之卡比那样的圆头短手，没有手指。
-- **主形象什么都不穿**。可选的服装有 T 恤、写代码卫衣和浅卡其外套；配件有耳机、头顶小橘子和冬季围巾。
-- **风格**：大面积留白，墨线干净有力，用圆形网点代替渐变，杏色只用在局部。
+圆胖身体、大圆角方头、短圆手；默认半眯眼斜看人，沉稳，带一点冷幽默。主形象不穿衣服，可按场景加 T 恤、卫衣、外套或配件。
 
-| 颜色 | Hex | 用在哪里 |
-|---|---|---|
-| 墨色 | `#2B2520` | 所有线条 |
-| 杏橘 | `#EE9A55` | 局部网点：吻部、头顶、耳内、手脚尖、项圈 |
-| 纸色 | `#F7F2EA` | 背景和身体 |
+画面以留白和漫画墨线为主，用网点代替渐变。主色是墨色 `#2B2520`、纸色 `#F7F2EA`、局部杏橘 `#EE9A55`。
 
-## 目录结构
+## 进一步使用
 
-```text
-stoneo-visual/
-├── SKILL.md                 # 入口：角色、风格、流程、文件索引
-├── references/              # 提示词模板、参考图选择、验收与常见问题、
-│                            # 输出规范、季节/节日限定、HTML 加字、目录约定、完整示例
-├── assets/
-│   ├── prompt/parts.json    # 提示词的全部文字（唯一来源）
-│   ├── refs/                # 出图用的参考图（主形象母版、转面、表情、动作、服装、配件）
-│   ├── templates/           # 方案对比板、解释图加标签、图标对比板的 HTML 模板，图标起手 SVG
-│   └── readme/              # 本页配图
-├── scripts/                 # build_prompt 拼提示词、check_image 验图、cutout 抠图、
-│                            # render_labels 加字、render_board 对比板、finalize 交付打包、
-│                            # check_icon_svg / export_icon 图标检查与导出
-└── agents/openai.yaml
-```
+- [SKILL.md](./SKILL.md)：完整规则和文件索引。
+- [出图流程](./references/pipeline.md)：各模式的命令、检查和交付。
+- [提示词与示例](./references/prompt-template.md) · [已验证示例与验证范围](./references/examples/README.md)：自己编写或调整生成任务。
+- [图标规范](./references/icon-mode.md)：SVG 绘制、小尺寸检查与平台导出。
+- [常见问题](./references/troubleshooting.md)：出图跑偏时怎么修。
 
-`workbench/` 是本地的过程文件目录，已经被 `.gitignore` 忽略，不会进仓库。
+## 目前的限制
 
-## 已知局限
+- 画不出纯侧面，最多到 3/4 侧。
+- 头像缩到 32px 左右时斜眼不明显；图标在 16px 下只剩轮廓。
+- 季节和节日主题目前只验证过冬季。
 
-- **纯侧面画不出来**：模型总会画成偏 3/4 的角度。
-- **「专注」表情**必须带上对应的参考图，只写文字描述会画回默认的半眯眼，或者变成瞪人。
-- **手里拿东西时容易长出手指**：必须加短圆手参考图。事后局部修改往往修不掉，只能重新出图。
-- **32px 头像**基本看不清斜眼。64px 没问题。
-- **图标 16px** 时水豚只剩轮廓，斜眼剩一条横线加一个点。功能符号比角色特征更耐缩小。
-- **季节/节日例子大多没实测**：目前只有冬季实际出过图，其余的例子还没验证。春节容易被自动加上红色和"福"字。
-- **小橘子、耳机、背包带、衣服颜色**偶尔会跑偏，修正写法见 `references/troubleshooting.md`。
-- **依赖宿主能力**：需要宿主有生图（能以参考图做 edit）和读图能力。脚本需要 Python 3、Pillow 和 Chrome/Chromium，导出图标另需 cairosvg。
+## 致谢与许可
 
-## 致谢和许可
+结构与工作流参考了 [oil-visual](https://github.com/oil-oil/oil-visual)。其中 [`scripts/cutout.py`](./scripts/cutout.py) 改编自其同名脚本，沿用 MIT 许可；原版权声明和完整条款保留在 [`scripts/LICENSE-oil-visual`](./scripts/LICENSE-oil-visual)。复制或分发该部分时，须保留版权与许可声明。
 
-- 结构和写法参考了 [oil-visual](https://github.com/oil-oil/oil-visual)，感谢原作者。
-- `scripts/cutout.py` 改编自 oil-visual 的同名脚本，遵守其 MIT 许可，原许可证见 [`scripts/LICENSE-oil-visual`](./scripts/LICENSE-oil-visual)。
-- 本仓库其余内容（角色形象、参考图、文档）**暂未开源，保留所有权利**。
+其余脚本、文档、角色形象和参考图的许可见根目录 `LICENSE`。
